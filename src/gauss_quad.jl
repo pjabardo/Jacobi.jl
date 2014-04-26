@@ -39,9 +39,6 @@ function wgj{T<:Real}(z::Array{T,1}, alpha=0, beta=0)
     
     coef = 2^(a+b+1) * ( gamma(a+Q+1) / gamma(Q+1) ) * (gamma(b+Q+1) / gamma(a+b+Q+1))
     w = [djacobi(zz, Q, a, b) for zz=z]
-    return coef
-    println(coef)
-    println(w)
     
     for i = 1:Q
         ww = w[i]
