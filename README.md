@@ -78,9 +78,11 @@ where `df` is an estimate of the derivative of the function at the quadrature no
 Another important operation is interpolation. If a function is known at some nodes, 
 in this case the quadrature nodes, how can we accurately interpolate hte function on
 other nodes? Since we know the nodes, Lagrangian interpolation is the best way.
-Using the definition of the Langrangian interpolation can be numerically expensive and
-perhaps not well conditioned. The functions `lgj`, `lglj`, `lgrjm` and `lgrjp` calculate
-the Lagrangian interpolators. The example below plots the Lagrangian interpolators of
+The function `lagrange` implements the standard  definition of the Langrangian 
+interpolation. On the other hand there are analytical expressions for the Lagrangian interpolators that are implemented in functions `lgj`, `lglj`, `lgrjm` and `lgrjp`. Unless
+some accuracy problem is noted with the standard Lagrangian interpolators, these 
+functions should not be used (their definition is used to calculate the derivative 
+matrices). The example below plots the Lagrangian interpolators of
 the Gauss-Lobatto-Jacobi quadrature points for 5 nodes.
 
 ```
@@ -91,7 +93,7 @@ nx = 201
 x = linspace(-1, 1, nx)
 y = zeros(nx, Q)
 for k = 1:Q, i=1:nx
-  y[i,k] = lglj(k, x[i], z)
+  y[i,k] = lagrange(k, x[i], z)
 end
 
 for k=1:Q
@@ -102,7 +104,9 @@ end
 If the operation above is to be repeated often, pre-calculating the Lagrangian 
 interpolators is useful and an Interpolation matrix can be calculated. The 
 following example illustrates the use of the interpolation matrix that can 
-be computed with any of the functions `igj`, `iglj`, `igrjm` and `igrjp`.
+be computed with the function `interp_mat`. The functions `igj`, `iglj`, `igrjm` and
+ `igrjp` calculate the interpolation matrix using the analytical expression for the
+Lagrangian interpolators.
 
 ```
 using PyPlot
@@ -112,7 +116,7 @@ nx = 201
 x = linspace(-1, 1, nx)
 ye = sin(pi*z)
 ye2 = sin(pi*x)
-Im = iglj(x, z)
+Im = interp_mat(x, z)
 y = Im * ye
 plot(z, ye, "o")
 plot(x, ye2, "r-")

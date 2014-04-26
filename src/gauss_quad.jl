@@ -226,6 +226,38 @@ function dgrjp{T<:Real}(z::Array{T,1}, alpha=0, beta=0)
 end
 
 
+function lagrange(i, x, z)
+    nz = length(z)
+
+    l = one(z[1])
+
+    for k = 1:(i-1)
+        l = l * (x-z[k]) / (z[i]-z[k])
+    end
+
+    for k = (i+1):nz
+        l = l * (x-z[k]) / (z[i]-z[k])
+    end
+
+    return l
+end    
+
+function interp_mat{T<:Real}(x::Array{T,1}, z::Array{T,1})
+
+    Q = length(z)
+    np = length(x)
+    
+    Imat = zeros(T, np, Q)
+    for i = 1:Q, k=1:np
+        Imat[k,i] = lagrange(i, x[k], z)
+    end
+
+    return(Imat)
+
+end
+
+
+
 
 function lgj{T<:Real}(i::Int, zz::T, z::Array{T,1}, alpha=0, beta=0, epsmult=50)
     
