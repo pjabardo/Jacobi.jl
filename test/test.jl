@@ -100,3 +100,9 @@ function runtests(a=0, b=0, T=Float64, qmax=30, qmin=3)
     return err
 end
 
+
+
+
+        
+
+    
