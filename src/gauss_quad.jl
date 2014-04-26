@@ -313,7 +313,7 @@ function igj{T<:Real}(zp::Array{T,1}, z::Array{T,1}, alpha=0, beta=0)
     Imat = zeros(T, np, Q)
     for i = 1:Q
         for k = 1:np
-            Imat[k,i] = lagrange_gj(i, zp[k], z, alpha, beta)
+            Imat[k,i] = lgj(i, zp[k], z, alpha, beta)
         end
     end
 
@@ -330,7 +330,7 @@ function iglj{T<:Real}(zp::Array{T,1}, z::Array{T,1}, alpha=0, beta=0)
     Imat = zeros(T, np, Q)
     for i = 1:Q
         for k = 1:np
-            Imat[k,i] = lagrange_glj(i, zp[k], z, alpha, beta)
+            Imat[k,i] = lglj(i, zp[k], z, alpha, beta)
         end
     end
 
@@ -346,7 +346,7 @@ function igrjm{T<:Real}(zp::Array{T,1}, z::Array{T,1}, alpha=0, beta=0)
     Imat = zeros(T, np, Q)
     for i = 1:Q
         for k = 1:np
-            Imat[k,i] = lagrange_grjm(i, zp[k], z, alpha, beta)
+            Imat[k,i] = lgrjm(i, zp[k], z, alpha, beta)
         end
     end
 
@@ -363,7 +363,7 @@ function igrjp{T<:Real}(zp::Array{T,1}, z::Array{T,1}, alpha=0, beta=0)
     Imat = zeros(T, np, Q)
     for i = 1:Q
         for k = 1:np
-            Imat[k,i] = lagrange_grjp(i, zp[k], z, alpha, beta)
+            Imat[k,i] = lgrjp(i, zp[k], z, alpha, beta)
         end
     end
 

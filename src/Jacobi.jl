@@ -4,7 +4,7 @@ module Jacobi
 export jacobi, djacobi, jacobi_zeros
 export zgj, zglj, zgrjm, zgrjp, wgj, wglj, wgrjm, wgrjp
 export dgj, dglj, dgrjm, dgrjp, lgj, lglj, lgrjm, lgrjp
-export igrj, iglj, igrjm, igrjp
+export igj, iglj, igrjm, igrjp
 
 
 
