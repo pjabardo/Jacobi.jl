@@ -75,6 +75,60 @@ df = D * f
 ```
 where `df` is an estimate of the derivative of the function at the quadrature nodes.
 
+Another important operation is interpolation. If a function is known at some nodes, 
+in this case the quadrature nodes, how can we accurately interpolate hte function on
+other nodes? Since we know the nodes, Lagrangian interpolation is the best way.
+Using the definition of the Langrangian interpolation can be numerically expensive and
+perhaps not well conditioned. The functions `lgj`, `lglj`, `lgrjm` and `lgrjp` calculate
+the Lagrangian interpolators. The example below plots the Lagrangian interpolators of
+the Gauss-Lobatto-Jacobi quadrature points for 5 nodes.
+
+```
+using PyPlot
+Q = 5
+z = zglj(Q)
+nx = 201
+x = linspace(-1, 1, nx)
+y = zeros(nx, Q)
+for k = 1:Q, i=1:nx
+  y[i,k] = lglj(k, x[i], z)
+end
+
+for k=1:Q
+  plot(x, y[:,k])
+end
+```
+
+If the operation above is to be repeated often, pre-calculating the Lagrangian 
+interpolators is useful and an Interpolation matrix can be calculated. The 
+following example illustrates the use of the interpolation matrix that can 
+be computed with any of the functions `igj`, `iglj`, `igrjm` and `igrjp`.
+
+```
+using PyPlot
+Q = 5
+z = zglj(Q)
+nx = 201
+x = linspace(-1, 1, nx)
+ye = sin(pi*z)
+ye2 = sin(pi*x)
+Im = iglj(x, z)
+y = Im * ye
+plot(z, ye, "o")
+plot(x, ye2, "r-")
+plot(x, y, "b-")
+```
+increasing the number of quadrature points the interpolated function (blue line) 
+becomes more accurate.
+
+
+## References
+
+This package was implemented using both references below. 
+
+ * Spectral/hp Element Methods for CFD, 2nd edition, Karniadakis and Sherwin, 2005.
+ * NIST Handbook of Mathematical Functions
+
 
 
 
