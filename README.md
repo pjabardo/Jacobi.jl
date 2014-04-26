@@ -76,13 +76,10 @@ df = D * f
 where `df` is an estimate of the derivative of the function at the quadrature nodes.
 
 Another important operation is interpolation. If a function is known at some nodes, 
-in this case the quadrature nodes, how can we accurately interpolate hte function on
+in this case the quadrature nodes, how can we accurately interpolate the function on
 other nodes? Since we know the nodes, Lagrangian interpolation is the best way.
 The function `lagrange` implements the standard  definition of the Langrangian 
-interpolation. On the other hand there are analytical expressions for the Lagrangian interpolators that are implemented in functions `lgj`, `lglj`, `lgrjm` and `lgrjp`. Unless
-some accuracy problem is noted with the standard Lagrangian interpolators, these 
-functions should not be used (their definition is used to calculate the derivative 
-matrices). The example below plots the Lagrangian interpolators of
+interpolation.  The example below plots the Lagrangian interpolators of
 the Gauss-Lobatto-Jacobi quadrature points for 5 nodes.
 
 ```
@@ -104,9 +101,7 @@ end
 If the operation above is to be repeated often, pre-calculating the Lagrangian 
 interpolators is useful and an Interpolation matrix can be calculated. The 
 following example illustrates the use of the interpolation matrix that can 
-be computed with the function `interp_mat`. The functions `igj`, `iglj`, `igrjm` and
- `igrjp` calculate the interpolation matrix using the analytical expression for the
-Lagrangian interpolators.
+be computed with the function `interp_mat`. 
 
 ```
 using PyPlot
