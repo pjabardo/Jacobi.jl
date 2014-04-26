@@ -37,9 +37,12 @@ function wgj{T<:Real}(z::Array{T,1}, alpha=0, beta=0)
 
     Q::Int = length(z)
     
-    coef = 2^(a+b+1) * ( gamma(a+Q+1) / factorial(Q) ) * (gamma(b+Q+1) / gamma(a+b+Q+1))
-
+    coef = 2^(a+b+1) * ( gamma(a+Q+1) / gamma(Q+1) ) * (gamma(b+Q+1) / gamma(a+b+Q+1))
     w = [djacobi(zz, Q, a, b) for zz=z]
+    return coef
+    println(coef)
+    println(w)
+    
     for i = 1:Q
         ww = w[i]
         x = z[i]
@@ -56,7 +59,7 @@ function wglj{T<:Real}(z::Array{T,1}, alpha=0, beta=0)
 
     Q = length(z)
 
-    coef = 2^(a+b+1) / (Q-1) * (gamma(a+Q) / factorial(Q-1)) * (gamma(b+Q) / gamma(a+b+Q+1))
+    coef = 2^(a+b+1) / (Q-1) * (gamma(a+Q) / gamma(Q)) * (gamma(b+Q) / gamma(a+b+Q+1))
     
     w = [jacobi(zz, Q-1, a, b) for zz=z]
     w[1] = (b+1) * coef / (w[1]*w[1])
@@ -76,7 +79,7 @@ function wgrjm{T<:Real}(z::Array{T,1}, alpha=0, beta=0)
     
     Q = length(z)
 
-    coef = 2^(a+b) / (b+Q) * (gamma(a+Q) / factorial(Q-1)) * (gamma(b+Q) / gamma(a+b+Q+1))
+    coef = 2^(a+b) / (b+Q) * (gamma(a+Q) / gamma(Q)) * (gamma(b+Q) / gamma(a+b+Q+1))
 
     w = [jacobi(zz, Q-1, a, b) for zz=z]
 
@@ -96,7 +99,7 @@ function wgrjp{T<:Real}(z::Array{T,1}, alpha=0, beta=0)
     b = convert(T, beta)
     Q = length(z)
 
-    coef = 2^(a+b) / (a+Q) * (gamma(a+Q) / factorial(Q-1)) * (gamma(b+Q) / gamma(a+b+Q+1))
+    coef = 2^(a+b) / (a+Q) * (gamma(a+Q) / gamma(Q)) * (gamma(b+Q) / gamma(a+b+Q+1))
 
     w = [jacobi(zz, Q-1, a, b) for zz=z]
 
