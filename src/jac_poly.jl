@@ -8,7 +8,7 @@ function jacobi{T<:Real}(x::T, n, a::T, b::T)
         return ox/2 * (a - b + (a + b + 2*ox)*x)
     end
     
-    p0 = one(1)
+    p0 = one(x)
     p1 = ox/2 * (a - b + (a + b + 2*ox)*x)
     p2 = zx;
     
@@ -44,7 +44,7 @@ djacobi(x, n, a) = djacobi(x, n, a, zero(x))
 
 
 
-function jacobi_zeros{T <: Real}(m, a::T, b::T)
+function jacobi_zeros!{T <: Real}(m, a::T, b::T, x::Array{T,1})
 
     o = one(T)
     z = zero(T)
@@ -54,7 +54,6 @@ function jacobi_zeros{T <: Real}(m, a::T, b::T)
     const EPS::T = 100 * eps(T)
     local i, k, iter=0
 
-    x = zeros(T, m)
     for k = 1:m
         # Initial guess.
         r = -cos( (2k-o)/(2*m) * pi)
@@ -89,6 +88,6 @@ function jacobi_zeros{T <: Real}(m, a::T, b::T)
         
 end
 
-
+jacobi_zeros{T<:Real}(m, a::T, b::T) = jacobi_zeros!(m, a, b, zeros(T))
 jacobi_zeros(m) = jacobi_zeros(m, 0.0, 0.0)
 jacobi_zeros(m, a) = jacobi_zeros(m, a, zero(a))
