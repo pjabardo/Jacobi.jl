@@ -41,14 +41,13 @@ djacobi(x, n, a) = djacobi(x, n, a, zero(x))
 
 
 
-
-
-
-function jacobi_zeros!{T<:Real}(m, a::T, b::T, x::AbstractArray{T})
+function jacobi_zeros!{T<:Real}(m, alpha, beta, x::AbstractArray{T}, ::Type{T}=Float64)
 
     o = one(T)
     z = zero(T)
 
+    a = convert(T,alpha)
+    b = convert(T,beta)
 
     const MAXITER = 500
     const EPS::T = 100 * eps(T)
@@ -88,6 +87,10 @@ function jacobi_zeros!{T<:Real}(m, a::T, b::T, x::AbstractArray{T})
         
 end
 
-jacobi_zeros{T<:Real}(m, a::T, b::T) = jacobi_zeros!(m, a, b, zeros(T,m))
+
+
+
+
+jacobi_zeros{T<:Real}(m, a, b, ::Type{T}=Float64) = jacobi_zeros!(m, a, b, zeros(T,m), T)
 jacobi_zeros(m) = jacobi_zeros(m, 0.0, 0.0)
 jacobi_zeros(m, a) = jacobi_zeros(m, a, zero(a))
