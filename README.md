@@ -14,8 +14,19 @@ To calculate the derivative of jacobi polynomials, use function
 
 When calculating the weights of Gaussian qudrature, it is necessary to determine
 the zeros of Jacobi polynomials. The function `jacobi_zeros(m, a, b)` calculates the 
-zeros of a Jacobi polynomial of degree `m` with weights `a` and `b`.
+zeros of a Jacobi polynomial of degree `m` with weights `a` and `b`. Also present 
+is the non allocating function `jacobi_zeros!(m, a, b, x)`.
 
+Legendre polynomials are a special case when a and b are zero. 
+Function `legendre(x, n)` implements this simpler recurrence relation.
+
+Also available are Chebyshev polynomials and the respective derivatives and zeros:
+     * `chebyshev(x, n)` Chebyshev polynomial of the first kind.
+     * `chebyshev(x, n)` Chebyshev polynomial of the first kind.
+     * `chebyshev_zeros(n)` and `chebyshev2_zeros(n)` Roots of Chebyshev polynomials
+     * `chebyshev_zeros!(n)` and `chebyshev2_zeros!(n)` Roots of Chebyshev polynomials
+
+     
 
 ## Gauss Quadrature
 
@@ -126,7 +137,7 @@ becomes more accurate.
 This package was implemented using both references below. 
 
  * Spectral/hp Element Methods for CFD, 2nd edition, Karniadakis and Sherwin, 2005.
- * NIST Handbook of Mathematical Functions
+ * NIST Handbook of Mathematical Functions (http://dlmf.nist.gov/18)
 
 
 

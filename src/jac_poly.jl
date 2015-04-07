@@ -44,7 +44,7 @@ djacobi(x, n, a) = djacobi(x, n, a, zero(x))
 
 
 
-function jacobi_zeros!{T <: Real}(m, a::T, b::T, x::Array{T,1})
+function jacobi_zeros!{T<:Real}(m, a::T, b::T, x::AbstractArray{T})
 
     o = one(T)
     z = zero(T)
@@ -88,6 +88,6 @@ function jacobi_zeros!{T <: Real}(m, a::T, b::T, x::Array{T,1})
         
 end
 
-jacobi_zeros{T<:Real}(m, a::T, b::T) = jacobi_zeros!(m, a, b, zeros(T))
+jacobi_zeros{T<:Real}(m, a::T, b::T) = jacobi_zeros!(m, a, b, zeros(T,m))
 jacobi_zeros(m) = jacobi_zeros(m, 0.0, 0.0)
 jacobi_zeros(m, a) = jacobi_zeros(m, a, zero(a))

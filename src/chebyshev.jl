@@ -48,7 +48,7 @@ dchebyshev{T<:Real}(x::T, n) = n * chebyshev2(x, n-1)
 dchebyshev2{T<:Real}(x::T, n) = ( (n+1)*chebyshev(n+1) - x*chebyshev2(n) ) / (x*x-one(x))
 
 
-function chebyshev_zeros!{T<:Real}(n, x::Array{T,1})
+function chebyshev_zeros!{T<:Real}(n, x::AbstractArray{T})
 
     for k in 1:n
         num::T = (2*k - 1)*pi
@@ -61,7 +61,7 @@ function chebyshev_zeros!{T<:Real}(n, x::Array{T,1})
 end
 
 chebyshev_zeros(n) = chebyshev_zeros!(n, zeros(n))
-function chebyshev2_zeros!{T<:Real}(n, x::Array{T,1})
+function chebyshev2_zeros!{T<:Real}(n, x::AbstractArray{T})
 
     for k in 1:n
         num::T = k*pi
