@@ -48,30 +48,30 @@ dchebyshev{T<:Real}(x::T, n) = n * chebyshev2(x, n-1)
 dchebyshev2{T<:Real}(x::T, n) = ( (n+1)*chebyshev(n+1) - x*chebyshev2(n) ) / (x*x-one(x))
 
 
-function chebyshev_zeros!{T<:Real}(n, x::AbstractArray{T}, ::Type{T}=Float64)
+function chebyshev_zeros!{T<:FloatingPoint}(n, x::AbstractArray{T})
 
     for k in 1:n
-        num::T = (2*k - 1)*pi
+        num::T =  (2*k - 1)*pi
         
-        x[k] = cos( num/(2*n) )
+        x[k] = -cos( num/(2*n) )
     end
 
     return x
 
 end
 
-chebyshev_zeros{T<:Real}(n, ::Type{T}=Float64) = chebyshev_zeros!(n, zeros(T, n), T)
+chebyshev_zeros{T<:FloatingPoint}(n, ::Type{T}=Float64) = chebyshev_zeros!(n, zeros(T, n))
 
-function chebyshev2_zeros!{T<:Real}(n, x::AbstractArray{T}, ::Type{T}=Float64)
+function chebyshev2_zeros!{T<:FloatingPoint}(n, x::AbstractArray{T})
 
     for k in 1:n
         num::T = k*pi
         
-        x[k] = cos( num/(n+1) )
+        x[k] = -cos( num/(n+1) )
     end
 
     return x
 
 end
-chebyshev2_zeros{T<:Real}(n, ::Type{T}=Float64) = chebyshev2_zeros!(n, zeros(T, n), T)
+chebyshev2_zeros{T<:FloatingPoint}(n, ::Type{T}=Float64) = chebyshev2_zeros!(n, zeros(T, n))
 

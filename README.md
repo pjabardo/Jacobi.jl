@@ -5,7 +5,7 @@ quadrature related operations.
 
 ## Jacobi polynomials
 
-Jacobi polynomials  are implemented in function 
+Jacobi polynomials  $P_n^{a,b}(x)$ are implemented in function 
 `jacobi(x, n, a, b)` where `x` is where you want to calculate the 
 polynomial of degree `n` with weights `a` and `b`.
 
@@ -21,10 +21,10 @@ Legendre polynomials are a special case when a and b are zero.
 Function `legendre(x, n)` implements this simpler recurrence relation.
 
 Also available are Chebyshev polynomials and the respective derivatives and zeros:
-     * `chebyshev(x, n)` Chebyshev polynomial of the first kind.
-     * `chebyshev(x, n)` Chebyshev polynomial of the first kind.
-     * `chebyshev_zeros(n)` and `chebyshev2_zeros(n)` Roots of Chebyshev polynomials
-     * `chebyshev_zeros!(n)` and `chebyshev2_zeros!(n)` Roots of Chebyshev polynomials
+ * `chebyshev(x, n)` Chebyshev polynomial of the first kind $T_n(x)$.
+ * `chebyshev2(x, n)` Chebyshev polynomial of the second kind $U_n(x)$.
+ * `chebyshev_zeros(n)` and `chebyshev2_zeros(n)` Roots of Chebyshev polynomials
+ * `chebyshev_zeros!(n, x)` and `chebyshev2_zeros!(n, x)` Roots of Chebyshev polynomials
 
      
 
