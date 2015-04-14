@@ -1,4 +1,4 @@
-function legendre{T<:Real}(x::T, n)
+function legendre(x, n)
 
 
     if n==0
@@ -19,7 +19,7 @@ function legendre{T<:Real}(x::T, n)
     return p1
 end
 
-dlegendre{T<:Real}(x::T, n) = djacobi(x, n)
+dlegendre(x, n) = djacobi(x, n)
 legendre_zeros(m) = jacobi_zeros(m)
 
 

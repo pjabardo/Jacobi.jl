@@ -1,6 +1,6 @@
 
 
-function chebyshev{T<:Real}(x::T, n)
+function chebyshev(x, n)
     if n==0
         return one(x)
     elseif n==1
@@ -8,7 +8,7 @@ function chebyshev{T<:Real}(x::T, n)
     end
 
     T0 = one(x)
-    T1 = m*x
+    T1 = x
 
     for i = 2:n
         T2 = 2*x*T1 - T0
@@ -21,7 +21,7 @@ function chebyshev{T<:Real}(x::T, n)
 end
 
 
-function chebyshev2{T<:Real}(x::T, n)
+function chebyshev2(x, n)
 
     if n==0
         return one(x)
@@ -44,8 +44,8 @@ function chebyshev2{T<:Real}(x::T, n)
 end
 
 
-dchebyshev{T<:Real}(x::T, n) = n * chebyshev2(x, n-1)
-dchebyshev2{T<:Real}(x::T, n) = ( (n+1)*chebyshev(n+1) - x*chebyshev2(n) ) / (x*x-one(x))
+dchebyshev(x, n) = n * chebyshev2(x, n-1)
+dchebyshev2(x, n) = ( (n+1)*chebyshev(n+1) - x*chebyshev2(n) ) / (x*x-one(x))
 
 
 function chebyshev_zeros!{T<:FloatingPoint}(n, x::AbstractArray{T})

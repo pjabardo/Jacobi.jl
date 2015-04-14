@@ -1,22 +1,22 @@
 
-function jacobi{T<:Real}(x::T, n, a::T, b::T)
+function jacobi(x, n, a, b)
     ox = one(x)
     zx = zero(x)
     if n==0
-        return one(x)
+        return ox
     elseif n==1
-        return ox/2 * (a - b + (a + b + 2*ox)*x)
+        return ox/2 * (a - b + (a + b + 2)*x)
     end
     
-    p0 = one(x)
-    p1 = ox/2 * (a - b + (a + b + 2*ox)*x)
+    p0 = ox
+    p1 = ox/2 * (a - b + (a + b + 2)*x)
     p2 = zx;
     
     for i = 1:(n-1)
-	a1 = 2*ox*(i+1)*(i+a+b+1)*(2*i+a+b);
-	a2 = ox*(2*i+a+b+1)*(a*a-b*b);
-	a3 = ox*(2*i+a+b)*(2*i+a+b+1)*(2*i+a+b+2);
-	a4 = 2*ox*(i+a)*(i+b)*(2*i+a+b+2);
+	a1 = 2*(i+1)*(i+a+b+1)*(2*i+a+b);
+	a2 = (2*i+a+b+1)*(a*a-b*b);
+	a3 = (2*i+a+b)*(2*i+a+b+1)*(2*i+a+b+2);
+	a4 = 2*(i+a)*(i+b)*(2*i+a+b+2);
 	p2 = ox/a1*( (a2 + a3*x)*p1 - a4*p0);
 
         p0 = p1
