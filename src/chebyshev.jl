@@ -20,6 +20,16 @@ function chebyshev(x, n)
 
 end
 
+function chebyshev!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
+
+    m = length(x)
+    for i = 1:m
+        y[i] = chebyshev(x[i], n)
+    end
+    return y
+end
+
+chebyshev{T<:Real}(x::AbstractArray{T}, n) = chebyshev!(x, n, zeros(x))
 
 function chebyshev2(x, n)
 
@@ -43,9 +53,46 @@ function chebyshev2(x, n)
     
 end
 
+function chebyshev2!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
+
+    m = length(x)
+    for i = 1:m
+        y[i] = chebyshev2(x[i], n)
+    end
+    return y
+end
+
+chebyshev2{T<:Real}(x::AbstractArray{T}, n) = chebyshev2!(x, n, zeros(x))
+
 
 dchebyshev(x, n) = n * chebyshev2(x, n-1)
+function dchebyshev!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
+
+    m = length(x)
+    for i = 1:m
+        y[i] = dchebyshev(x[i], n)
+    end
+    return y
+end
+
+dchebyshev{T<:Real}(x::AbstractArray{T}, n) = dchebyshev!(x, n, zeros(x))
+
+
 dchebyshev2(x, n) = ( (n+1)*chebyshev(n+1) - x*chebyshev2(n) ) / (x*x-one(x))
+
+
+function dchebyshev2!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
+
+    m = length(x)
+    for i = 1:m
+        y[i] = dchebyshev2(x[i], n)
+    end
+    return y
+end
+
+dchebyshev2{T<:Real}(x::AbstractArray{T}, n) = dchebyshev2!(x, n, zeros(x))
+
+
 
 
 function chebyshev_zeros!{T<:FloatingPoint}(n, x::AbstractArray{T})
