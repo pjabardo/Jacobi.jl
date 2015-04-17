@@ -29,14 +29,35 @@ jacobi(x, n) = jacobi(x, n, zero(x), zero(x))
 jacobi(x, n, a) = jacobi(x, n, a, zero(x))
 
 
+function jacobi!{T<:Real}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
 
-
-function djacobi(x, n, a, b)
-    one(x)/2 * (a + b + n + 1) * jacobi(x, n-1, a+1, b+1)
+    m = length(x)
+    for i = 1:m
+        y[i] = jacobi(x[i], n, a, b)
+    end
+    return y
 end
+
+jacobi{T<:Real}(x::AbstractArray{T}, n, a, b) = jacobi!(x, n, a, b, zeros(x))
+
+
+
+
+djacobi(x, n, a, b) =  one(x)/2 * (a + b + n + 1) * jacobi(x, n-1, a+1, b+1)
+
 djacobi(x, n) = djacobi(x, n, zero(x), zero(x))
 djacobi(x, n, a) = djacobi(x, n, a, zero(x))
 
+function djacobi!{T<:Real}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
+
+    m = length(x)
+    for i = 1:m
+        y[i] = djacobi(x[i], n, a, b)
+    end
+    return y
+end
+
+djacobi{T<:Real}(x::AbstractArray{T}, n, a, b) = djacobi!(x, n, a, b, zeros(x))
 
 
 
