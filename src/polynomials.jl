@@ -1,3 +1,4 @@
+using Polynomials
 
 function chebyshev{T<:Number}(n, ::Type{T}=Int, var=:x)
 
