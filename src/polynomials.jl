@@ -22,7 +22,7 @@ function poly_chebyshev{T<:Number}(n, ::Type{T}=Int, var=:x)
 
 end
 
-poly_dchebyshev{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(chebyshev(n,T, var))
+poly_dchebyshev{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(poly_chebyshev(n,T, var))
 
 
 
@@ -48,7 +48,7 @@ function poly_chebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x)
 
 end
 
-poly_dchebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(chebyshev2(n,T, var))
+poly_dchebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(poly_chebyshev2(n,T, var))
 
 
 function poly_legendre{T<:Number}(n, ::Type{T}=Float64, var=:x)
@@ -74,7 +74,7 @@ function poly_legendre{T<:Number}(n, ::Type{T}=Float64, var=:x)
 end
 
 
-poly_dlegendre{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(legendre(n,T, var))
+poly_dlegendre{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(poly_legendre(n,T, var))
 
 
 
@@ -108,4 +108,4 @@ function poly_jacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x)
 end
 
 
-poly_djacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x) = polyder(jacobi(n,a,b,T,var))
+poly_djacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x) = polyder(poly_jacobi(n,a,b,T,var))

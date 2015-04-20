@@ -152,34 +152,47 @@ t11 = Poly([0, -11, 0, 220, 0, -1232, 0, 2816, 0, -2816, 0, 1024])
 u11 = Poly([0, -12, 0, 280, 0, -1792, 0, 4608, 0, -5120, 0, 2048])
 
 pt11 = Jacobi.poly_chebyshev(11)
+pu11 = Jacobi.poly_chebyshev2(11)
+pdt11 = Jacobi.poly_dchebyshev(11)
+pdu11 = Jacobi.poly_dchebyshev2(11)
+
+dt11 = polyder(t11)
+du11 = polyder(u11)
+
+@test t11 == pt11
+@test u11 == pu11
+@test dt11 == pdt11
+@test du11 == pdu11
 
 
-"""
 y1 = zeros(xx)
 
 # Testing Chebyshev polynomials of the first kind
 Jacobi.chebyshev!(xx, 11, y1)
-y2 = polyval(xx, t11)
+y2 = polyval(t11, xx)
 @test_approx_eq_eps maxabs(y1-y2) 0.0 1e-12
 
 # Testing Chebyshev polynomials of the second kind
 Jacobi.chebyshev2!(xx, 11, y1)
-y2 = polyval(xx, u11)
+y2 = polyval(u11, xx)
 @test_approx_eq_eps maxabs(y1-y2) 0.0 1e-12
 
-# Testing derivatives
-dt11 = dpoly(t11)
-du11 = dpoly(u11)
 
 # Testing Chebyshev polynomials of the first kind
 Jacobi.dchebyshev!(xx, 11, y1)
-y2 = peval(xx, dt11)
+y2 = polyval(dt11, xx)
 @test_approx_eq_eps maxabs(y1-y2) 0.0 1e-12
 
 # Testing Chebyshev polynomials of the second kind
 Jacobi.dchebyshev2!(xx, 11, y1)
-y2 = peval(xx, du11)
+y2 = polyval(du11, xx)
 @test_approx_eq_eps maxabs(y1-y2) 0.0 3e-12
+
+
+# Testing legendre polynomials:
+leg11 = Poly([0, -693, 0, 15015, 0, -90090, 0, 218790, 0, -230945, 0, 88179])/256
+pleg11 = Jacobi.poly_legendre(11)
+@test_approx_eq_eps maxabs(leg11.a[1:12] - pleg11.a[1:12]) 0.0 200*eps(500.0)
 
 
 
@@ -194,6 +207,7 @@ end
 # Testing array function
 y1 = zeros(xx)
 y2 = zeros(xx)
+
 
 Jacobi.jacobi!(xx, 5, 0.8, 0.3, y1)
 for i in 1:length(xx)
@@ -251,11 +265,10 @@ end
 @test_approx_eq maxabs(y1-y2) 0.0
 
 
-"""
-
 
 # Test quadrature functions
 
 
 
 
+true
