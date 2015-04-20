@@ -1,6 +1,6 @@
 using Polynomials
 
-function chebyshev{T<:Number}(n, ::Type{T}=Int, var=:x)
+function poly_chebyshev{T<:Number}(n, ::Type{T}=Int, var=:x)
 
     if n==0
         return Poly{T}([one(T)], var)
@@ -22,11 +22,11 @@ function chebyshev{T<:Number}(n, ::Type{T}=Int, var=:x)
 
 end
 
-dchebyshev{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(chebyshev(n,T, var))
+poly_dchebyshev{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(chebyshev(n,T, var))
 
 
 
-function chebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x)
+function poly_chebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x)
 
     if n==0
         return Poly{T}([one(T)], var)
@@ -48,10 +48,10 @@ function chebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x)
 
 end
 
-dchebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(chebyshev2(n,T, var))
+poly_dchebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(chebyshev2(n,T, var))
 
 
-function legendre{T<:Number}(n, ::Type{T}=Float64, var=:x)
+function poly_legendre{T<:Number}(n, ::Type{T}=Float64, var=:x)
 
 
     if n==0
@@ -74,13 +74,13 @@ function legendre{T<:Number}(n, ::Type{T}=Float64, var=:x)
 end
 
 
-dlegendre{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(legendre(n,T, var))
+poly_dlegendre{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(legendre(n,T, var))
 
 
 
 
 
-function jacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x)
+function poly_jacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x)
 
     ox = one(T)
     zx = zero(T)
@@ -108,4 +108,4 @@ function jacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x)
 end
 
 
-djacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x) = polyder(jacobi(n,a,b,T,var))
+poly_djacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x) = polyder(jacobi(n,a,b,T,var))

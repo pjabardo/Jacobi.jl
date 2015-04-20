@@ -137,30 +137,8 @@ function ipoly(p)
     return a
 end
 
-function padd(p1, p2)
-    n1 = length(p1)
-    n2 = length(p2)
-    nmin = min(n1, n2)
-    nmax = max(n1, n2)
-    p = (n1 < n2)?copy(p2):copy(p1)
-    
-    for i = 1:nmin
-        p[i] = p1[i] + p2[i]
-    end
-
-    return p
-end
-
-psub(p1, p2) = padd(p1, -1*p2)
 
   
-function pmult(p1, p2)
-
-    n1 = length(p1)
-    n2 = length(p2)
-
-    p = zeros(eltype(p1), 
-end
 
        
 # Chebyshev polynomials
@@ -168,21 +146,25 @@ end
 
 xx = linspace(-1.0, 1.0, 21)
 
-t11 = [0, -11, 0, 220, 0, -1232, 0, 2816, 0, -2816, 0, 1024]
-u11 = [0, -12, 0, 280, 0, -1792, 0, 4608, 0, -5120, 0, 2048]
+using Polynomials
+
+t11 = Poly([0, -11, 0, 220, 0, -1232, 0, 2816, 0, -2816, 0, 1024])
+u11 = Poly([0, -12, 0, 280, 0, -1792, 0, 4608, 0, -5120, 0, 2048])
+
+pt11 = Jacobi.poly_chebyshev(11)
 
 
-
+"""
 y1 = zeros(xx)
 
 # Testing Chebyshev polynomials of the first kind
 Jacobi.chebyshev!(xx, 11, y1)
-y2 = peval(xx, t11)
+y2 = polyval(xx, t11)
 @test_approx_eq_eps maxabs(y1-y2) 0.0 1e-12
 
 # Testing Chebyshev polynomials of the second kind
 Jacobi.chebyshev2!(xx, 11, y1)
-y2 = peval(xx, u11)
+y2 = polyval(xx, u11)
 @test_approx_eq_eps maxabs(y1-y2) 0.0 1e-12
 
 # Testing derivatives
@@ -269,7 +251,7 @@ end
 @test_approx_eq maxabs(y1-y2) 0.0
 
 
-
+"""
 
 
 # Test quadrature functions

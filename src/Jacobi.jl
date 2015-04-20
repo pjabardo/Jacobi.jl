@@ -10,6 +10,8 @@ export chebyshev_zeros!, chebyshev_zeros, chebyshev2_zeros!, chebyshev2_zeros
 export legendre, dlegendre, legendre_zeros
 export chebyshev!, chebyshev2!, dchebyshev!, dchebyshev2!
 export legendre!, jacobi!, djacobi!
+export poly_chebyshev, poly_chebyshev2, poly_dchebyshev, poly_dchebyshev2
+export poly_legendre, poly_dlegendre, poly_jacobi, poly_djacobi
 
 include("jac_poly.jl")
 include("chebyshev.jl")
