@@ -36,7 +36,7 @@ function chebyshev2(x, n)
     if n==0
         return one(x)
     elseif n==1
-        return x
+        return 2x
     end
 
     U0 = one(x)
@@ -78,7 +78,33 @@ end
 dchebyshev{T<:Real}(x::AbstractArray{T}, n) = dchebyshev!(x, n, zeros(x))
 
 
-dchebyshev2(x, n) = ( (n+1)*chebyshev(n+1) - x*chebyshev2(n) ) / (x*x-one(x))
+function dchebyshev2(x, n)
+
+    if n == 0
+        return zero(x)
+    elseif n==1
+        return 2*one(x)
+    end
+
+    dU0 = zero(x)
+    dU1 = 2
+    U0 = one(x)
+    U1 = 2*x
+
+    for i = 2:n
+        U2 = 2*x*U1 - U0
+        dU2 = 2*U1 + 2*x*dU1 - dU0
+        
+        U0 = U1
+        U1 = U2
+        dU0 = dU1
+        dU1 = dU2
+    end
+
+    return dU1
+end
+
+
 
 
 function dchebyshev2!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
