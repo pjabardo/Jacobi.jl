@@ -5,10 +5,6 @@ import Jacobi
 
 
 z = [0.05, 0.25, 0.50, 0.75, 0.95]
-L2 = [-0.49625, -0.40625, -0.125, 0.34375, 0.85375]
-L3 = [-0.0746875, -0.3359375, -0.4375000, -0.0703125, 0.7184375]
-L9 = [0.11857899, 0.17682442, -0.26789856, 0.31033185, -0.26842182]
-L10 = [-0.2129835, 0.2212002, -0.1882286, 0.2643745, -0.3548803]
 
 L = [-0.49625  -0.40625  -0.125  0.34375  0.85375;
      -0.0746875  -0.3359375  -0.4375000  -0.0703125  0.7184375;
@@ -131,6 +127,40 @@ function dpoly(p)
     return a
 end
 
+function ipoly(p)
+    n = length(p)
+    a = zeros(eltype(p), n+1)
+    a[1] = zero(eltype(p))
+    for i = 1:n
+        a[i+1] = a[i] / n
+    end
+    return a
+end
+
+function padd(p1, p2)
+    n1 = length(p1)
+    n2 = length(p2)
+    nmin = min(n1, n2)
+    nmax = max(n1, n2)
+    p = (n1 < n2)?copy(p2):copy(p1)
+    
+    for i = 1:nmin
+        p[i] = p1[i] + p2[i]
+    end
+
+    return p
+end
+
+psub(p1, p2) = padd(p1, -1*p2)
+
+  
+function pmult(p1, p2)
+
+    n1 = length(p1)
+    n2 = length(p2)
+
+    p = zeros(eltype(p1), 
+end
 
        
 # Chebyshev polynomials
@@ -243,3 +273,7 @@ end
 
 
 # Test quadrature functions
+
+
+
+

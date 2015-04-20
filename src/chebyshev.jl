@@ -31,6 +31,8 @@ end
 
 chebyshev{T<:Real}(x::AbstractArray{T}, n) = chebyshev!(x, n, zeros(x))
 
+
+
 function chebyshev2(x, n)
 
     if n==0
@@ -52,6 +54,7 @@ function chebyshev2(x, n)
 
     
 end
+
 
 function chebyshev2!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
 

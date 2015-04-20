@@ -15,6 +15,6 @@ include("jac_poly.jl")
 include("chebyshev.jl")
 include("legendre.jl")
 include("gauss_quad.jl")
-
+include("polynomials.jl")
 
 end # module
