@@ -13,6 +13,8 @@ export legendre!, jacobi!, djacobi!
 export poly_chebyshev, poly_chebyshev2, poly_dchebyshev, poly_dchebyshev2
 export poly_legendre, poly_dlegendre, poly_jacobi, poly_djacobi
 
+export QUADRATURE_TYPE, GJ, GLJ, GRJM, GRJP
+export qzeros, qweights, qdiff, Quadrature
 include("jac_poly.jl")
 include("chebyshev.jl")
 include("legendre.jl")
