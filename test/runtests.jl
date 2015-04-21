@@ -266,9 +266,6 @@ end
 
 
 
-# Test quadrature functions
-
-
 
 
 true
