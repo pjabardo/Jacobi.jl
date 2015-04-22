@@ -15,6 +15,7 @@ export poly_legendre, poly_dlegendre, poly_jacobi, poly_djacobi
 
 export QUADRATURE_TYPE, GJ, GLJ, GRJM, GRJP
 export qzeros, qweights, qdiff, Quadrature
+export qalpha, qbeta
 include("jac_poly.jl")
 include("chebyshev.jl")
 include("legendre.jl")
