@@ -39,6 +39,8 @@ function jacobi!{T<:Real}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
 end
 
 jacobi{T<:Real}(x::AbstractArray{T}, n, a, b) = jacobi!(x, n, a, b, zeros(x))
+jacobi{T<:Real}(x::AbstractArray{T}, n) = jacobi!(x, n, zero(T), zero(T), zeros(x))
+jacobi{T<:Real}(x::AbstractArray{T}, n, a) = jacobi!(x, n, a, zero(T), zeros(x))
 
 
 
@@ -58,6 +60,8 @@ function djacobi!{T<:Real}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
 end
 
 djacobi{T<:Real}(x::AbstractArray{T}, n, a, b) = djacobi!(x, n, a, b, zeros(x))
+djacobi{T<:Real}(x::AbstractArray{T}, n) = djacobi!(x, n, zero(T), zero(T), zeros(x))
+djacobi{T<:Real}(x::AbstractArray{T}, n, a) = djacobi!(x, n, a, zero(T), zeros(x))
 
 
 
