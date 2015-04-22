@@ -3,6 +3,13 @@
 A library that implements Jacobi polynomials and Gauss 
 quadrature related operations.
 
+## Notebook
+
+In the notebooks directory there are tow notebooks, 
+polynomials.ipynb and gauss-quad.ipynb that show most of the
+usage of this package.
+
+   
 ## Jacobi polynomials
 
 Jacobi polynomials  $P_n^{a,b}(x)$ are implemented in function 
