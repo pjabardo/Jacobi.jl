@@ -5,9 +5,10 @@ quadrature related operations.
 
 ## Notebook
 
-In the notebooks directory there are tow notebooks, 
-polynomials.ipynb and gauss-quad.ipynb that show most of the
-usage of this package.
+In the notebooks directory there are tow notebooks, as follows, that shows the basic usage of the library.
+
+ * [Calculation of some orthogonal polynomials and their zeros](http://nbviewer.ipython.org/github/pjabardo/Jacobi.jl/blob/master/notebooks/polynomials.ipynb)
+ * [Gauss-type qudrature, interpolation and differentiation](http://nbviewer.ipython.org/github/pjabardo/Jacobi.jl/blob/master/notebooks/gauss-quad.ipynb)
 
    
 ## Jacobi polynomials
