@@ -239,7 +239,7 @@ type GLJ <: QUADRATURE_TYPE end
 type GRJP <: QUADRATURE_TYPE end
 type GRJM <: QUADRATURE_TYPE end
 
-type Quadrature{T<:FloatingPoint}
+type Quadrature{T<:FloatingPoint,QT<:QUADRATURE_TYPE}
     Q::Int
     a::T
     b::T
@@ -268,15 +268,15 @@ qdiff{T<:FloatingPoint}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, 
 
 function Quadrature{T<:FloatingPoint, QT<:QUADRATURE_TYPE}(Q, a=0, b=0, ::Type{QT}=GJ,
                                                            ::Type{T}=Float64)
-
     aa = convert(T, a)
     bb = convert(T, b)
     z = qzeros(QT, Q, aa, bb, T)
     w = qweights(QT, z, aa, bb)
     D = qdiff(QT, z, aa, bb)
-    Quadrature{T}(Q, aa, bb, z, w, D)
+    Quadrature{T,QT}(Q, aa, bb, z, w, D)
 end
 
+qtype{T,QT}(q::Quadrature{T,QT}) = QT
 qzeros{QT<:Quadrature}(q::QT) = q.z
 qweights{QT<:Quadrature}(q::QT) = q.w
 qdiff{QT<:Quadrature}(q::QT) = q.D
@@ -299,9 +299,20 @@ function lagrange(i, x, z)
     end
 
     return l
-end    
+end
 
-function interp_mat{T<:Real}(x::Array{T,1}, z::Array{T,1})
+function lagrange!{T<:Real}(i, x::AbstractArray{T}, z, y::AbstractArray{T})
+    for k = 1:length(x)
+        y[k] = lagrange(i, x[k], z)
+    end
+    return y
+end
+
+lagrange{T<:Real}(i, x::AbstractArray{T}, z) = lagrange!(i, x, z, zeros(x))
+
+
+
+function interp_mat{T<:Real}(x::AbstractArray{T}, z::AbstractArray{T})
 
     Q = length(z)
     np = length(x)
