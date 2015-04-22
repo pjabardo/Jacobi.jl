@@ -266,7 +266,7 @@ qdiff{T<:FloatingPoint}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, 
 
 
 
-function Quadrature{T<:FloatingPoint, QT<:QUADRATURE_TYPE}(Q, a=0, b=0, ::Type{QT}=GJ,
+function Quadrature{T<:FloatingPoint, QT<:QUADRATURE_TYPE}(::Type{QT}=GJ, Q, a=0, b=0, 
                                                            ::Type{T}=Float64)
     aa = convert(T, a)
     bb = convert(T, b)
