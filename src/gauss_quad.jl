@@ -7,14 +7,14 @@ type GRJN <: QUADRATURE_TYPE end
 
     
 
-function zgj{T<:FloatingPoint}(Q, a, b, ::Type{T}=Float64)
+function zgj{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
     jacobi_zeros(Q, a, b, T)
 end
 
 zgj(Q) = zgj(Q, 0.0, 0.0)
 zgj(Q, a) = zgj(Q, a, zero(a))
 
-function zglj{T<:FloatingPoint}(Q, a, b, ::Type{T}=Float64)
+function zglj{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-2, a+1, b+1, T)
     o = one(T)
     return [-o, z, o]
@@ -23,7 +23,7 @@ zglj(Q) = zglj(Q, 0.0, 0.0)
 zglj(Q, a) = zglj(Q, a, zero(a))
 
 
-function zgrjm{T<:FloatingPoint}(Q, a, b, ::Type{T}=Float64)
+function zgrjm{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-1, a, b+1)
     return [-1, z]
 end
@@ -31,7 +31,7 @@ zgrjm(Q) = zgrjm(Q, 0.0, 0.0)
 zgrjm(Q, a) = zgrjm(Q, a, zero(a))
 
 
-function zgrjp{T<:Real}(Q, a, b, ::Type{T}=Float64)
+function zgrjp{T<:Number}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-1, a+1, b)
     return [z, one(T)]
 end
@@ -39,7 +39,7 @@ zgrjp(Q) = zgrjp(Q, 0.0, 0.0)
 zgrjp(Q, a) = zgrjp(Q, a, zero(a))
 
 
-function wgj{T<:Real}(z::AbstractArray{T}, alpha=0, beta=0)
+function wgj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     a = convert(T, alpha)
     b = convert(T, beta)
 
@@ -58,7 +58,7 @@ function wgj{T<:Real}(z::AbstractArray{T}, alpha=0, beta=0)
 end
 
 
-function wglj{T<:Real}(z::AbstractArray{T}, alpha=0, beta=0)
+function wglj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     a = convert(T, alpha)
     b = convert(T, beta)
 
@@ -78,7 +78,7 @@ function wglj{T<:Real}(z::AbstractArray{T}, alpha=0, beta=0)
     return w
 end
 
-function wgrjm{T<:Real}(z::AbstractArray{T}, alpha=0, beta=0)
+function wgrjm{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     a = convert(T, alpha)
     b = convert(T, beta)
     
@@ -99,7 +99,7 @@ function wgrjm{T<:Real}(z::AbstractArray{T}, alpha=0, beta=0)
 end
 
 
-function wgrjp{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function wgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     a = convert(T, alpha)
     b = convert(T, beta)
     Q = length(z)
@@ -119,7 +119,7 @@ function wgrjp{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-function dgj{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function dgj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     
     Q = length(z)
     a = convert(T, alpha)
@@ -142,7 +142,7 @@ function dgj{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-function dglj{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function dglj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     
     Q = length(z)
     a = convert(T, alpha)
@@ -174,7 +174,7 @@ function dglj{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-function dgrjm{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function dgrjm{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     
     Q = length(z)
     a = convert(T, alpha)
@@ -204,7 +204,7 @@ function dgrjm{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-function dgrjp{T<:Real}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function dgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     
     Q = length(z)
     a = convert(T, alpha)
@@ -239,7 +239,7 @@ type GLJ <: QUADRATURE_TYPE end
 type GRJP <: QUADRATURE_TYPE end
 type GRJM <: QUADRATURE_TYPE end
 
-type Quadrature{T<:FloatingPoint,QT<:QUADRATURE_TYPE}
+type Quadrature{T<:AbstractFloat,QT<:QUADRATURE_TYPE}
     Q::Int
     a::T
     b::T
@@ -249,24 +249,24 @@ type Quadrature{T<:FloatingPoint,QT<:QUADRATURE_TYPE}
 end
 
 
-qzeros{T<:FloatingPoint}(::Type{GJ}, Q, a=0, b=0, ::Type{T}=Float64) = zgj(Q, a, b, T)
-qzeros{T<:FloatingPoint}(::Type{GLJ}, Q, a=0, b=0, ::Type{T}=Float64) = zglj(Q, a, b, T)
-qzeros{T<:FloatingPoint}(::Type{GRJM}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjm(Q, a, b, T)
-qzeros{T<:FloatingPoint}(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjp(Q, a, b, T)
+qzeros{T<:AbstractFloat}(::Type{GJ}, Q, a=0, b=0, ::Type{T}=Float64) = zgj(Q, a, b, T)
+qzeros{T<:AbstractFloat}(::Type{GLJ}, Q, a=0, b=0, ::Type{T}=Float64) = zglj(Q, a, b, T)
+qzeros{T<:AbstractFloat}(::Type{GRJM}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjm(Q, a, b, T)
+qzeros{T<:AbstractFloat}(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjp(Q, a, b, T)
 
-qweights{T<:FloatingPoint}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = wgj(z, a, b)
-qweights{T<:FloatingPoint}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = wglj(z, a, b)
-qweights{T<:FloatingPoint}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = wgrjm(z, a, b)
-qweights{T<:FloatingPoint}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = wgrjp(z, a, b)
+qweights{T<:AbstractFloat}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = wgj(z, a, b)
+qweights{T<:AbstractFloat}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = wglj(z, a, b)
+qweights{T<:AbstractFloat}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = wgrjm(z, a, b)
+qweights{T<:AbstractFloat}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = wgrjp(z, a, b)
 
-qdiff{T<:FloatingPoint}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = dgj(z, a, b)
-qdiff{T<:FloatingPoint}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = dglj(z, a, b)
-qdiff{T<:FloatingPoint}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = dgrjm(z, a, b)
-qdiff{T<:FloatingPoint}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, a, b)
+qdiff{T<:AbstractFloat}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = dgj(z, a, b)
+qdiff{T<:AbstractFloat}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = dglj(z, a, b)
+qdiff{T<:AbstractFloat}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = dgrjm(z, a, b)
+qdiff{T<:AbstractFloat}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, a, b)
 
 
 
-function Quadrature{T<:FloatingPoint, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0, 
+function Quadrature{T<:AbstractFloat, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0, 
                                                            ::Type{T}=Float64)
     aa = convert(T, a)
     bb = convert(T, b)
@@ -301,18 +301,18 @@ function lagrange(i, x, z)
     return l
 end
 
-function lagrange!{T<:Real}(i, x::AbstractArray{T}, z, y::AbstractArray{T})
+function lagrange!{T<:Number}(i, x::AbstractArray{T}, z, y::AbstractArray{T})
     for k = 1:length(x)
         y[k] = lagrange(i, x[k], z)
     end
     return y
 end
 
-lagrange{T<:Real}(i, x::AbstractArray{T}, z) = lagrange!(i, x, z, zeros(x))
+lagrange{T<:Number}(i, x::AbstractArray{T}, z) = lagrange!(i, x, z, zeros(x))
 
 
 
-function interp_mat{T<:Real}(x::AbstractArray{T}, z::AbstractArray{T})
+function interp_mat{T<:Number}(x::AbstractArray{T}, z::AbstractArray{T})
 
     Q = length(z)
     np = length(x)

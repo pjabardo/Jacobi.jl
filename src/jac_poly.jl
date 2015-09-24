@@ -29,7 +29,7 @@ jacobi(x, n) = jacobi(x, n, zero(x), zero(x))
 jacobi(x, n, a) = jacobi(x, n, a, zero(x))
 
 
-function jacobi!{T<:Real}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
+function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
 
     m = length(x)
     for i = 1:m
@@ -38,9 +38,9 @@ function jacobi!{T<:Real}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
     return y
 end
 
-jacobi{T<:Real}(x::AbstractArray{T}, n, a, b) = jacobi!(x, n, a, b, zeros(x))
-jacobi{T<:Real}(x::AbstractArray{T}, n) = jacobi!(x, n, zero(T), zero(T), zeros(x))
-jacobi{T<:Real}(x::AbstractArray{T}, n, a) = jacobi!(x, n, a, zero(T), zeros(x))
+jacobi{T<:Number}(x::AbstractArray{T}, n, a, b) = jacobi!(x, n, a, b, zeros(x))
+jacobi{T<:Number}(x::AbstractArray{T}, n) = jacobi!(x, n, zero(T), zero(T), zeros(x))
+jacobi{T<:Number}(x::AbstractArray{T}, n, a) = jacobi!(x, n, a, zero(T), zeros(x))
 
 
 
@@ -50,7 +50,7 @@ djacobi(x, n, a, b) =  one(x)/2 * (a + b + n + 1) * jacobi(x, n-1, a+1, b+1)
 djacobi(x, n) = djacobi(x, n, zero(x), zero(x))
 djacobi(x, n, a) = djacobi(x, n, a, zero(x))
 
-function djacobi!{T<:Real}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
+function djacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
 
     m = length(x)
     for i = 1:m
@@ -59,14 +59,14 @@ function djacobi!{T<:Real}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
     return y
 end
 
-djacobi{T<:Real}(x::AbstractArray{T}, n, a, b) = djacobi!(x, n, a, b, zeros(x))
-djacobi{T<:Real}(x::AbstractArray{T}, n) = djacobi!(x, n, zero(T), zero(T), zeros(x))
-djacobi{T<:Real}(x::AbstractArray{T}, n, a) = djacobi!(x, n, a, zero(T), zeros(x))
+djacobi{T<:Number}(x::AbstractArray{T}, n, a, b) = djacobi!(x, n, a, b, zeros(x))
+djacobi{T<:Number}(x::AbstractArray{T}, n) = djacobi!(x, n, zero(T), zero(T), zeros(x))
+djacobi{T<:Number}(x::AbstractArray{T}, n, a) = djacobi!(x, n, a, zero(T), zeros(x))
 
 
 
 
-function jacobi_zeros!{T<:FloatingPoint}(m, alpha, beta, x::AbstractArray{T})
+function jacobi_zeros!{T<:AbstractFloat}(m, alpha, beta, x::AbstractArray{T})
 
     o = one(T)
     z = zero(T)
@@ -110,13 +110,15 @@ function jacobi_zeros!{T<:FloatingPoint}(m, alpha, beta, x::AbstractArray{T})
         
     return x
         
-end
+    end
+
+
+    
 
 
 
 
-
-function jacobi_zeros{T<:FloatingPoint}(m, a, b, ::Type{T}=Float64)
+function jacobi_zeros{T<:AbstractFloat}(m, a, b, ::Type{T}=Float64)
     jacobi_zeros!(m, a, b, zeros(T,m))
 end
 

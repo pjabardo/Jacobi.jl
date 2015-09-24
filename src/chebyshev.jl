@@ -20,7 +20,7 @@ function chebyshev(x, n)
 
 end
 
-function chebyshev!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
+function chebyshev!{T<:Number}(x::AbstractArray{T}, n, y::AbstractArray{T})
 
     m = length(x)
     for i = 1:m
@@ -29,7 +29,7 @@ function chebyshev!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
     return y
 end
 
-chebyshev{T<:Real}(x::AbstractArray{T}, n) = chebyshev!(x, n, zeros(x))
+chebyshev{T<:Number}(x::AbstractArray{T}, n) = chebyshev!(x, n, zeros(x))
 
 
 
@@ -56,7 +56,7 @@ function chebyshev2(x, n)
 end
 
 
-function chebyshev2!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
+function chebyshev2!{T<:Number}(x::AbstractArray{T}, n, y::AbstractArray{T})
 
     m = length(x)
     for i = 1:m
@@ -65,11 +65,11 @@ function chebyshev2!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
     return y
 end
 
-chebyshev2{T<:Real}(x::AbstractArray{T}, n) = chebyshev2!(x, n, zeros(x))
+chebyshev2{T<:Number}(x::AbstractArray{T}, n) = chebyshev2!(x, n, zeros(x))
 
 
 dchebyshev(x, n) = n * chebyshev2(x, n-1)
-function dchebyshev!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
+function dchebyshev!{T<:Number}(x::AbstractArray{T}, n, y::AbstractArray{T})
 
     m = length(x)
     for i = 1:m
@@ -78,7 +78,7 @@ function dchebyshev!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
     return y
 end
 
-dchebyshev{T<:Real}(x::AbstractArray{T}, n) = dchebyshev!(x, n, zeros(x))
+dchebyshev{T<:Number}(x::AbstractArray{T}, n) = dchebyshev!(x, n, zeros(x))
 
 
 function dchebyshev2(x, n)
@@ -110,7 +110,7 @@ end
 
 
 
-function dchebyshev2!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
+function dchebyshev2!{T<:Number}(x::AbstractArray{T}, n, y::AbstractArray{T})
 
     m = length(x)
     for i = 1:m
@@ -119,12 +119,12 @@ function dchebyshev2!{T<:Real}(x::AbstractArray{T}, n, y::AbstractArray{T})
     return y
 end
 
-dchebyshev2{T<:Real}(x::AbstractArray{T}, n) = dchebyshev2!(x, n, zeros(x))
+dchebyshev2{T<:Number}(x::AbstractArray{T}, n) = dchebyshev2!(x, n, zeros(x))
 
 
 
 
-function chebyshev_zeros!{T<:FloatingPoint}(n, x::AbstractArray{T})
+function chebyshev_zeros!{T<:AbstractFloat}(n, x::AbstractArray{T})
 
     for k in 1:n
         num::T =  (2*k - 1)*pi
@@ -136,9 +136,9 @@ function chebyshev_zeros!{T<:FloatingPoint}(n, x::AbstractArray{T})
 
 end
 
-chebyshev_zeros{T<:FloatingPoint}(n, ::Type{T}=Float64) = chebyshev_zeros!(n, zeros(T, n))
+chebyshev_zeros{T<:AbstractFloat}(n, ::Type{T}=Float64) = chebyshev_zeros!(n, zeros(T, n))
 
-function chebyshev2_zeros!{T<:FloatingPoint}(n, x::AbstractArray{T})
+function chebyshev2_zeros!{T<:AbstractFloat}(n, x::AbstractArray{T})
 
     for k in 1:n
         num::T = k*pi
@@ -149,5 +149,5 @@ function chebyshev2_zeros!{T<:FloatingPoint}(n, x::AbstractArray{T})
     return x
 
 end
-chebyshev2_zeros{T<:FloatingPoint}(n, ::Type{T}=Float64) = chebyshev2_zeros!(n, zeros(T, n))
+chebyshev2_zeros{T<:AbstractFloat}(n, ::Type{T}=Float64) = chebyshev2_zeros!(n, zeros(T, n))
 
