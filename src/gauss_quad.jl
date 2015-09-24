@@ -17,7 +17,7 @@ zgj(Q, a) = zgj(Q, a, zero(a))
 function zglj{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-2, a+1, b+1, T)
     o = one(T)
-    return [-o, z, o]
+    return [-o; z; o]
 end
 zglj(Q) = zglj(Q, 0.0, 0.0)
 zglj(Q, a) = zglj(Q, a, zero(a))
@@ -25,7 +25,7 @@ zglj(Q, a) = zglj(Q, a, zero(a))
 
 function zgrjm{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-1, a, b+1)
-    return [-1, z]
+    return [-one{T}; z]
 end
 zgrjm(Q) = zgrjm(Q, 0.0, 0.0)
 zgrjm(Q, a) = zgrjm(Q, a, zero(a))
@@ -33,7 +33,7 @@ zgrjm(Q, a) = zgrjm(Q, a, zero(a))
 
 function zgrjp{T<:Number}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-1, a+1, b)
-    return [z, one(T)]
+    return [z; one(T)]
 end
 zgrjp(Q) = zgrjp(Q, 0.0, 0.0)
 zgrjp(Q, a) = zgrjp(Q, a, zero(a))
