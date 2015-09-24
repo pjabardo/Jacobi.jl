@@ -29,6 +29,7 @@ jacobi(x, n) = jacobi(x, n, zero(x), zero(x))
 jacobi(x, n, a) = jacobi(x, n, a, zero(x))
 
 
+
 function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
 
     m = length(x)
@@ -64,9 +65,13 @@ djacobi{T<:Number}(x::AbstractArray{T}, n) = djacobi!(x, n, zero(T), zero(T), ze
 djacobi{T<:Number}(x::AbstractArray{T}, n, a) = djacobi!(x, n, a, zero(T), zeros(x))
 
 
+import Base.eps
 
+eps{T<:AbstractFloat}(::Type{Complex{T}}) = eps(T)
 
-function jacobi_zeros!{T<:AbstractFloat}(m, alpha, beta, x::AbstractArray{T})
+typealias ReOrCmplx{T} Union{T,Complex{T}}
+
+function jacobi_zeros!{T<:Number}(m, alpha, beta, x::AbstractArray{T})
 
     o = one(T)
     z = zero(T)
@@ -88,20 +93,20 @@ function jacobi_zeros!{T<:AbstractFloat}(m, alpha, beta, x::AbstractArray{T})
         while(true)
             s = z
             for i = 1:(k-1)
-                    s += o/(r - x[i])
+                s += o/(r - x[i])
             end
             
             poly = jacobi(r, m, a, b)
             delta = -poly / (djacobi(r, m, a, b) - poly*s)
-
+            
             r += delta
             iter += 1
             
             if iter > MAXITER
                 throw("Program did not converge")
             end
-
-            if abs(delta) < EPS
+            
+            if abs(delta) < abs(EPS)
                 break
             end
         end
@@ -110,15 +115,12 @@ function jacobi_zeros!{T<:AbstractFloat}(m, alpha, beta, x::AbstractArray{T})
         
     return x
         
-    end
-
-
+end
     
 
+  
 
-
-
-function jacobi_zeros{T<:AbstractFloat}(m, a, b, ::Type{T}=Float64)
+function jacobi_zeros{T<:Number}(m, a, b, ::Type{T}=Float64)
     jacobi_zeros!(m, a, b, zeros(T,m))
 end
 
