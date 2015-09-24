@@ -69,7 +69,6 @@ import Base.eps
 
 eps{T<:AbstractFloat}(::Type{Complex{T}}) = eps(T)
 
-typealias ReOrCmplx{T} Union{T,Complex{T}}
 
 function jacobi_zeros!{T<:Number}(m, alpha, beta, x::AbstractArray{T})
 

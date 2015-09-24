@@ -2,9 +2,8 @@ abstract QUADRATURE_TYPE
 
 type GJ <: QUADRATURE_TYPE end
 type GLJ <: QUADRATURE_TYPE end
+type GRJM <: QUADRATURE_TYPE end
 type GRJP <: QUADRATURE_TYPE end
-type GRJN <: QUADRATURE_TYPE end
-
     
 
 function zgj{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
@@ -25,7 +24,7 @@ zglj(Q, a) = zglj(Q, a, zero(a))
 
 function zgrjm{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-1, a, b+1)
-    return [-one{T}; z]
+    return [-one(T); z]
 end
 zgrjm(Q) = zgrjm(Q, 0.0, 0.0)
 zgrjm(Q, a) = zgrjm(Q, a, zero(a))
@@ -234,10 +233,6 @@ function dgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-type GJ <: QUADRATURE_TYPE end
-type GLJ <: QUADRATURE_TYPE end
-type GRJP <: QUADRATURE_TYPE end
-type GRJM <: QUADRATURE_TYPE end
 
 type Quadrature{T<:AbstractFloat,QT<:QUADRATURE_TYPE}
     Q::Int
