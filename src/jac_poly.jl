@@ -1,8 +1,39 @@
 """
-Computes Jacobi polynomial.
+Computes Jacobi polynomial and derivatives of Jacobi polynomials.
 
 This function computes the jacobi polynomial of degree `n` with weights
-`a` and `b` at point x 
+`a` and `b` at point x (\$P_n^{a,b}(x)\$). There are several variants of the function 
+with default values:
+ 
+ * `jacobi(x, n)` (`a` and `b` are both zero)
+ * `jacobi(x, n, a) (`b` is zero)
+ * `jacobi(x, n, a, b) where `x` is an array
+ * `jacobi!(x, n, a, b, y) modifying array version of the function
+
+The derivative of Jacobi polynomials (\$\frac{dP_n^{a,b}(x)}{dx}\$)are computed with functions that add a `d` in front of its name:
+ 
+ * `djacobi`
+ * `djacobi!`
+
+### Examples
+```julia
+using Jacobi
+
+x = 0.3
+a = 0.2
+b = 0.1
+m = 5
+y = jacobi(x, m, a, b)
+x1 = linspace(-1,1,21)
+y1 = jacobi(x1, m, a, b)
+jacobi!(x1, m, a, b, y1)
+
+dy = djacobi(x, m, a, b)
+dy1 = djacobi(x1, m, a, b)
+djacobi!(x1, m, a, b)
+
+```
+
 """
 function jacobi(x, n, a, b)
     ox = one(x)
@@ -35,12 +66,7 @@ jacobi(x, n, a) = jacobi(x, n, a, zero(x))
 
 
 
-"""
-Computes Jacobi polynomial at an array of points.
-
-This function computes the jacobi polynomial of degree `n` with weights
-`a` and `b` at point x 
-"""
+@doc (@doc jacobi) jacobi!
 function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
 
     m = length(x)
@@ -56,6 +82,8 @@ jacobi{T<:Number}(x::AbstractArray{T}, n, a) = jacobi!(x, n, a, zero(T), zeros(x
 
 
 
+@doc (@doc jacobi) djacobi
+@doc (@doc jacobi) djacobi!
 
 djacobi(x, n, a, b) =  one(x)/2 * (a + b + n + 1) * jacobi(x, n-1, a+1, b+1)
 
@@ -80,7 +108,23 @@ import Base.eps
 
 eps{T<:AbstractFloat}(::Type{Complex{T}}) = eps(T)
 
+"""
+Compute the zeros of Jacobi polynomials
 
+This function computes the zeros of Jacobi polynomials:
+
+ * \$P_m^{a,b}(x) = 0 \$
+
+The `jacobi_zeros!` is the modifying version and the memory where the zeros
+will be stored are preallocated. The non-modifying version, `jacobi_zeros` 
+allocates a the memory and calls the modifying version.
+
+### Examples
+```
+using Jacobi
+z = jacobi_zeros(7, 0.3, 0.2)
+```
+"""
 function jacobi_zeros!{T<:Number}(m, alpha, beta, x::AbstractArray{T})
 
     o = one(T)
@@ -129,7 +173,7 @@ end
     
 
   
-
+@doc (@doc jacobi_zeros!) jacobi_zeros
 function jacobi_zeros{T<:Number}(m, a, b, ::Type{T}=Float64)
     jacobi_zeros!(m, a, b, zeros(T,m))
 end
