@@ -5,7 +5,61 @@ type GLJ <: QUADRATURE_TYPE end
 type GRJM <: QUADRATURE_TYPE end
 type GRJP <: QUADRATURE_TYPE end
     
+"""
+Gauss-type quadrature
 
+Numerical integrals in the domain [-1,1] can be computed
+from knowledge of the function in a set of nodes and the 
+corresponding nodes, such that
+
+\$\$
+\int_{-1}^1 (1-x)^a (1+x)^b (1-xf(x)\\:dx \\approx \\sum_{i=1}^N w^{a,b}_i f(x_i)
+\$\$
+
+The parameters `a` and `b` form a famility of quadrature rules. But if one or both 
+of the ends are specified, other quadrature families are possible:
+
+ * No ends are specified, Gauss-Jacobi quadrature (GJ)
+ * Both ends are specified, Gauss-Lobatto-Jacobi quadrature (GLJ)
+ * A single end is specified, Gauss-Radau-Jacobi quadrature (if +1 is specified, GRJP, if -1, GRJM)
+
+To compute the nodes, the following functions are available:
+
+ * `zgj` (Gauss-Jacobi)
+ * `zglj` (Gauss-Lobatto-Jacobi)
+ * `zgrjm` (Gauss-Radau-Jacobi, -1)
+ * `zgrjp` (Gauss-Radau-Jacobi, +1)
+
+All these functions have the following parameters:
+ 
+ * `Q`  Number of quadrature nodes
+ * `a` (a) weight
+ * `b` (b) weight
+ *  type Data type to be used, `Float64` is the default
+
+To compute the weights, first the zeros (`z`) should be computed and then the weights are computed
+with the following functions:
+
+ * `wgj(z, a, b)`
+ * `wglj(z, a, b)`
+ * `wgrjm(z, a, b)`
+ * `wgrjp(z, a, b)`
+
+ ### Derivatives
+
+The nodes used in the quadrature rules are convenient when using high order Lagrange interpolation
+To compute derivatives. The following functions are used to compute the derivative matrix such that
+`du = D*u`:
+
+ * `dgj(z, a, b)`
+ * `dglj(z, a, b)`
+ * `dgrjm(z, a, b)`
+ * `dgrjp(z, a, b)`
+
+### Examples
+
+See the notebooks availbale with the package.
+"""
 function zgj{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
     jacobi_zeros(Q, a, b, T)
 end
@@ -232,35 +286,68 @@ function dgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
 
 end
 
+@doc (@doc zgj) zglj
+@doc (@doc zgj) zgrjm
+@doc (@doc zgj) zgrjp
 
+@doc (@doc zgj) wgj
+@doc (@doc zgj) wglj
+@doc (@doc zgj) wgrjm
+@doc (@doc zgj) wgrjp
 
+@doc (@doc zgj) dgj
+@doc (@doc zgj) dglj
+@doc (@doc zgj) dgrjm
+@doc (@doc zgj) dgrjp
+
+"""
+Abstract interface of Gauss-type quadrature rules
+
+Can be used for any `AbstractFloat` type data. 
+"""
 type Quadrature{T<:AbstractFloat,QT<:QUADRATURE_TYPE}
+    "Number of quadrature nodes"
     Q::Int
+    "a weight"
     a::T
+    "b weight"
     b::T
+    "Quadrature nodes"
     z::Array{T, 1}
+    "Quadrature weights"
     w::Array{T, 1}
+    "Quadrature derivative matrix"
     D::Array{T, 2}
 end
 
-
+"""
+Return the zeros of a Gauss type quadrature
+"""
 qzeros{T<:AbstractFloat}(::Type{GJ}, Q, a=0, b=0, ::Type{T}=Float64) = zgj(Q, a, b, T)
 qzeros{T<:AbstractFloat}(::Type{GLJ}, Q, a=0, b=0, ::Type{T}=Float64) = zglj(Q, a, b, T)
 qzeros{T<:AbstractFloat}(::Type{GRJM}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjm(Q, a, b, T)
 qzeros{T<:AbstractFloat}(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjp(Q, a, b, T)
 
+"""
+Return the weights of a Gauss type quadrature 
+"""
 qweights{T<:AbstractFloat}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = wgj(z, a, b)
 qweights{T<:AbstractFloat}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = wglj(z, a, b)
 qweights{T<:AbstractFloat}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = wgrjm(z, a, b)
 qweights{T<:AbstractFloat}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = wgrjp(z, a, b)
 
+"""
+Return the derivative matrix of a Gauss type quadrature 
+"""
 qdiff{T<:AbstractFloat}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = dgj(z, a, b)
 qdiff{T<:AbstractFloat}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = dglj(z, a, b)
 qdiff{T<:AbstractFloat}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = dgrjm(z, a, b)
 qdiff{T<:AbstractFloat}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, a, b)
 
 
-
+"""
+Create a `Quadrature` object given its type, order and weights.
+"""
 function Quadrature{T<:AbstractFloat, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0, 
                                                            ::Type{T}=Float64)
     aa = convert(T, a)
@@ -271,15 +358,30 @@ function Quadrature{T<:AbstractFloat, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b
     Quadrature{T,QT}(Q, aa, bb, z, w, D)
 end
 
+"Return quadrature type"
 qtype{T,QT}(q::Quadrature{T,QT}) = QT
+"Return quadrature nodes"
 qzeros{QT<:Quadrature}(q::QT) = q.z
+"Return quadrature weights"
 qweights{QT<:Quadrature}(q::QT) = q.w
+"Return quadrature derivative matrix"
 qdiff{QT<:Quadrature}(q::QT) = q.D
+"Return number of quadrature nodes"
 num_points{QT<:Quadrature}(q::QT) = q.Q
+"Return quadrature `a` weight"
 qalpha{QT<:Quadrature}(q::QT) = q.a
+"Return quadrature `b` weight"
 qbeta{QT<:Quadrature}(q::QT) = q.b
 
+"""
+Compute the Lagrange polynomial
 
+This function computes the Lagrange polynomial at point `x` corresponding to
+the `i`-th node of the set `z`
+
+There is also a modifying version `lagrange!` used to computing the polynomials 
+at several points of an array `x`
+"""
 function lagrange(i, x, z)
     nz = length(z)
 
@@ -305,8 +407,17 @@ end
 
 lagrange{T<:Number}(i, x::AbstractArray{T}, z) = lagrange!(i, x, z, zeros(x))
 
+@doc (@doc lagrange) lagrange!
 
 
+"""
+Interpolation matrix
+
+Often it is necessary to compute the values of a function approximated using 
+Lagrange interpolation through a set of points `z`. If this will be repeated
+often, a matrix can be computed that allows the easy computation using the simple 
+expression `fx = Imat * fz`
+"""
 function interp_mat{T<:Number}(x::AbstractArray{T}, z::AbstractArray{T})
 
     Q = length(z)

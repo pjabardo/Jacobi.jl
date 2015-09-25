@@ -1,3 +1,11 @@
+""" 
+Compute Legendre polynomials
+
+Legendre polynomials are Jacobi polynomials with parameters a and b equals to zero.
+
+Same interface as `jacobi`. `dlegendre` computes the derivative of the Legendre 
+polynomial.
+"""
 function legendre(x, n)
 
 
@@ -30,6 +38,7 @@ end
 
 legendre{T<:Number}(x::AbstractArray{T}, n) = legendre!(x, n, zeros(x))
 
+
 dlegendre(x, n) = djacobi(x, n)
 
 
@@ -44,7 +53,11 @@ end
 
 dlegendre{T<:Number}(x::AbstractArray{T}, n) = dlegendre!(x, n, zeros(x))
 
+@doc (@doc legendre) legendre!
+@doc (@doc legendre) dlegendre
+@doc (@doc legendre) dlegendre!
 
 legendre_zeros(m) = jacobi_zeros(m)
+@doc (@doc jacobi_zeros!) legendre_zeros
 
 

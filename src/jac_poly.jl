@@ -30,7 +30,7 @@ jacobi!(x1, m, a, b, y1)
 
 dy = djacobi(x, m, a, b)
 dy1 = djacobi(x1, m, a, b)
-djacobi!(x1, m, a, b)
+djacobi!(x1, m, a, b, dy1)
 
 ```
 
@@ -117,7 +117,8 @@ This function computes the zeros of Jacobi polynomials:
 
 The `jacobi_zeros!` is the modifying version and the memory where the zeros
 will be stored are preallocated. The non-modifying version, `jacobi_zeros` 
-allocates a the memory and calls the modifying version.
+allocates a the memory and calls the modifying version. The function `legendre_zeros`
+compute the zeros of Legendre polynomials (`a = b = 0`)
 
 ### Examples
 ```
