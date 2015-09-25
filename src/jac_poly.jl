@@ -66,7 +66,6 @@ jacobi(x, n, a) = jacobi(x, n, a, zero(x))
 
 
 
-@doc (@doc jacobi) jacobi!
 function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
 
     m = length(x)
@@ -75,6 +74,7 @@ function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
     end
     return y
 end
+@doc (@doc jacobi) jacobi!
 
 jacobi{T<:Number}(x::AbstractArray{T}, n, a, b) = jacobi!(x, n, a, b, zeros(x))
 jacobi{T<:Number}(x::AbstractArray{T}, n) = jacobi!(x, n, zero(T), zero(T), zeros(x))
@@ -82,8 +82,6 @@ jacobi{T<:Number}(x::AbstractArray{T}, n, a) = jacobi!(x, n, a, zero(T), zeros(x
 
 
 
-@doc (@doc jacobi) djacobi
-@doc (@doc jacobi) djacobi!
 
 djacobi(x, n, a, b) =  one(x)/2 * (a + b + n + 1) * jacobi(x, n-1, a+1, b+1)
 
@@ -103,6 +101,8 @@ djacobi{T<:Number}(x::AbstractArray{T}, n, a, b) = djacobi!(x, n, a, b, zeros(x)
 djacobi{T<:Number}(x::AbstractArray{T}, n) = djacobi!(x, n, zero(T), zero(T), zeros(x))
 djacobi{T<:Number}(x::AbstractArray{T}, n, a) = djacobi!(x, n, a, zero(T), zeros(x))
 
+@doc (@doc jacobi) djacobi
+@doc (@doc jacobi) djacobi!
 
 import Base.eps
 
@@ -173,10 +173,10 @@ end
     
 
   
-@doc (@doc jacobi_zeros!) jacobi_zeros
 function jacobi_zeros{T<:Number}(m, a, b, ::Type{T}=Float64)
     jacobi_zeros!(m, a, b, zeros(T,m))
 end
 
 jacobi_zeros(m) = jacobi_zeros(m, 0.0, 0.0)
 jacobi_zeros(m, a) = jacobi_zeros(m, a, zero(a))
+@doc (@doc jacobi_zeros!) jacobi_zeros
