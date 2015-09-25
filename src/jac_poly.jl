@@ -1,7 +1,7 @@
 """
 Computes Jacobi polynomial.
 
-This function computes the jacobi polynomial $P_n^{a,b}(x)$ of degree `n` with weights
+This function computes the jacobi polynomial of degree `n` with weights
 `a` and `b` at point x 
 """
 function jacobi(x, n, a, b)
@@ -38,7 +38,7 @@ jacobi(x, n, a) = jacobi(x, n, a, zero(x))
 """
 Computes Jacobi polynomial at an array of points.
 
-This function computes the jacobi polynomial $P_n^{a,b}(x)$ of degree `n` with weights
+This function computes the jacobi polynomial of degree `n` with weights
 `a` and `b` at point x 
 """
 function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
