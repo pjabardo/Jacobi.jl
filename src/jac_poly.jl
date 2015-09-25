@@ -1,5 +1,5 @@
-r"""
-Computes Jacobi polynomial $P_n^{a,b}(x)$.
+"""
+Computes Jacobi polynomial.
 
 This function computes the jacobi polynomial of degree `n` with weights
 `a` and `b` at point x 
