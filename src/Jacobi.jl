@@ -19,6 +19,8 @@ export qalpha, qbeta
 
 if VERSION < v"0.4-"
     typealias AbstractFloat FloatingPoint
+    macro doc(x...)
+    end
 end
 
 
