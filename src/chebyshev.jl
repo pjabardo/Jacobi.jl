@@ -168,16 +168,18 @@ function chebyshev2_zeros!{T<:Number}(n, x::AbstractArray{T})
 end
 chebyshev2_zeros{T<:Number}(n, ::Type{T}=Float64) = chebyshev2_zeros!(n, zeros(T, n))
 
-@doc (@doc chebyshev) chebyshev!
-@doc (@doc chebyshev) chebyshev2
-@doc (@doc chebyshev) chebyshev2!
-
-@doc (@doc chebyshev) dchebyshev!
-@doc (@doc chebyshev) dchebyshev!
-@doc (@doc chebyshev) dchebyshev2
-@doc (@doc chebyshev) dchebyshev2!
-
-@doc (@doc chebyshev) chebyshev_zeros!
-@doc (@doc chebyshev) chebyshev2_zeros!
-@doc (@doc chebyshev) chebyshev_zeros
-@doc (@doc chebyshev) chebyshev2_zeros
+if VERSION >= v"0.4-"
+    @doc (@doc chebyshev) chebyshev!
+    @doc (@doc chebyshev) chebyshev2
+    @doc (@doc chebyshev) chebyshev2!
+    
+    @doc (@doc chebyshev) dchebyshev!
+    @doc (@doc chebyshev) dchebyshev!
+    @doc (@doc chebyshev) dchebyshev2
+    @doc (@doc chebyshev) dchebyshev2!
+    
+    @doc (@doc chebyshev) chebyshev_zeros!
+    @doc (@doc chebyshev) chebyshev2_zeros!
+    @doc (@doc chebyshev) chebyshev_zeros
+    @doc (@doc chebyshev) chebyshev2_zeros
+end

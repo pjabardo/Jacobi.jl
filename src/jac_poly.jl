@@ -74,7 +74,6 @@ function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
     end
     return y
 end
-@doc (@doc jacobi) jacobi!
 
 jacobi{T<:Number}(x::AbstractArray{T}, n, a, b) = jacobi!(x, n, a, b, zeros(x))
 jacobi{T<:Number}(x::AbstractArray{T}, n) = jacobi!(x, n, zero(T), zero(T), zeros(x))
@@ -101,8 +100,6 @@ djacobi{T<:Number}(x::AbstractArray{T}, n, a, b) = djacobi!(x, n, a, b, zeros(x)
 djacobi{T<:Number}(x::AbstractArray{T}, n) = djacobi!(x, n, zero(T), zero(T), zeros(x))
 djacobi{T<:Number}(x::AbstractArray{T}, n, a) = djacobi!(x, n, a, zero(T), zeros(x))
 
-@doc (@doc jacobi) djacobi
-@doc (@doc jacobi) djacobi!
 
 import Base.eps
 
@@ -180,4 +177,10 @@ end
 
 jacobi_zeros(m) = jacobi_zeros(m, 0.0, 0.0)
 jacobi_zeros(m, a) = jacobi_zeros(m, a, zero(a))
-@doc (@doc jacobi_zeros!) jacobi_zeros
+
+if VERSION >= v"0.4-"
+    @doc (@doc jacobi) djacobi
+    @doc (@doc jacobi) djacobi!
+    @doc (@doc jacobi) jacobi!
+    @doc (@doc jacobi_zeros!) jacobi_zeros
+end

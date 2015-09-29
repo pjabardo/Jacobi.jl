@@ -286,19 +286,6 @@ function dgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
 
 end
 
-@doc (@doc zgj) zglj
-@doc (@doc zgj) zgrjm
-@doc (@doc zgj) zgrjp
-
-@doc (@doc zgj) wgj
-@doc (@doc zgj) wglj
-@doc (@doc zgj) wgrjm
-@doc (@doc zgj) wgrjp
-
-@doc (@doc zgj) dgj
-@doc (@doc zgj) dglj
-@doc (@doc zgj) dgrjm
-@doc (@doc zgj) dgrjp
 
 """
 Abstract interface of Gauss-type quadrature rules
@@ -407,7 +394,6 @@ end
 
 lagrange{T<:Number}(i, x::AbstractArray{T}, z) = lagrange!(i, x, z, zeros(x))
 
-@doc (@doc lagrange) lagrange!
 
 
 """
@@ -435,3 +421,20 @@ end
 
 
 
+if VERSION >= v"0.4-"
+    @doc (@doc zgj) zglj
+    @doc (@doc zgj) zgrjm
+    @doc (@doc zgj) zgrjp
+    
+    @doc (@doc zgj) wgj
+    @doc (@doc zgj) wglj
+    @doc (@doc zgj) wgrjm
+    @doc (@doc zgj) wgrjp
+    
+    @doc (@doc zgj) dgj
+    @doc (@doc zgj) dglj
+    @doc (@doc zgj) dgrjm
+    @doc (@doc zgj) dgrjp
+    
+    @doc (@doc lagrange) lagrange!
+end

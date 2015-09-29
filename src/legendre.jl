@@ -52,12 +52,13 @@ function dlegendre!{T<:Number}(x::AbstractArray{T}, n, y::AbstractArray{T})
 end
 
 dlegendre{T<:Number}(x::AbstractArray{T}, n) = dlegendre!(x, n, zeros(x))
-
-@doc (@doc legendre) legendre!
-@doc (@doc legendre) dlegendre
-@doc (@doc legendre) dlegendre!
-
 legendre_zeros(m) = jacobi_zeros(m)
-@doc (@doc jacobi_zeros!) legendre_zeros
+
+if VERSION >= v"0.4-"
+    @doc (@doc legendre) legendre!
+    @doc (@doc legendre) dlegendre
+    @doc (@doc legendre) dlegendre!
+    @doc (@doc jacobi_zeros!) legendre_zeros
+end
 
 
