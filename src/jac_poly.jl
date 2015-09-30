@@ -6,11 +6,11 @@ This function computes the jacobi polynomial of degree `n` with weights
 with default values:
  
  * `jacobi(x, n)` (`a` and `b` are both zero)
- * `jacobi(x, n, a) (`b` is zero)
+ * `jacobi(x, n, a)` (`b` is zero)
  * `jacobi(x, n, a, b) where `x` is an array
- * `jacobi!(x, n, a, b, y) modifying array version of the function
+ * `jacobi!(x, n, a, b, y)` modifying array version of the function
 
-The derivative of Jacobi polynomials (\$\frac{dP_n^{a,b}(x)}{dx}\$)are computed with functions that add a `d` in front of its name:
+The derivative of Jacobi polynomials (\$\\frac{dP_n^{a,b}(x)}{dx}\$)are computed with functions that add a `d` in front of its name:
  
  * `djacobi`
  * `djacobi!`
