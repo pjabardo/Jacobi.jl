@@ -60,14 +60,14 @@ To compute derivatives. The following functions are used to compute the derivati
 
 See the notebooks availbale with the package.
 """
-function zgj{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
+function zgj{T<:Number}(Q, a, b, ::Type{T}=Float64)
     jacobi_zeros(Q, a, b, T)
 end
 
 zgj(Q) = zgj(Q, 0.0, 0.0)
 zgj(Q, a) = zgj(Q, a, zero(a))
 
-function zglj{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
+function zglj{T<:Number}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-2, a+1, b+1, T)
     o = one(T)
     return [-o; z; o]
@@ -76,7 +76,7 @@ zglj(Q) = zglj(Q, 0.0, 0.0)
 zglj(Q, a) = zglj(Q, a, zero(a))
 
 
-function zgrjm{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
+function zgrjm{T<:Number}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-1, a, b+1, T)
     return [-one(T); z]
 end
@@ -84,7 +84,7 @@ zgrjm(Q) = zgrjm(Q, 0.0, 0.0)
 zgrjm(Q, a) = zgrjm(Q, a, zero(a))
 
 
-function zgrjp{T<:AbsatractFloat}(Q, a, b, ::Type{T}=Float64)
+function zgrjp{T<:Number}(Q, a, b, ::Type{T}=Float64)
     z = jacobi_zeros(Q-1, a+1, b, T)
     return [z; one(T)]
 end
@@ -298,7 +298,7 @@ Abstract interface of Gauss-type quadrature rules
 
 Can be used for any `AbstractFloat` type data. 
 """
-type Quadrature{T<:AbstractFloat,QT<:QUADRATURE_TYPE}
+type Quadrature{T<:Number,QT<:QUADRATURE_TYPE}
     "Number of quadrature nodes"
     Q::Int
     "a weight"
@@ -316,32 +316,32 @@ end
 """
 Return the zeros of a Gauss type quadrature
 """
-qzeros{T<:AbstractFloat}(::Type{GJ}, Q, a=0, b=0, ::Type{T}=Float64) = zgj(Q, a, b, T)
-qzeros{T<:AbstractFloat}(::Type{GLJ}, Q, a=0, b=0, ::Type{T}=Float64) = zglj(Q, a, b, T)
-qzeros{T<:AbstractFloat}(::Type{GRJM}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjm(Q, a, b, T)
-qzeros{T<:AbstractFloat}(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjp(Q, a, b, T)
+qzeros{T<:Number}(::Type{GJ}, Q, a=0, b=0, ::Type{T}=Float64) = zgj(Q, a, b, T)
+qzeros{T<:Number}(::Type{GLJ}, Q, a=0, b=0, ::Type{T}=Float64) = zglj(Q, a, b, T)
+qzeros{T<:Number}(::Type{GRJM}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjm(Q, a, b, T)
+qzeros{T<:Number}(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjp(Q, a, b, T)
 
 """
 Return the weights of a Gauss type quadrature 
 """
-qweights{T<:AbstractFloat}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = wgj(z, a, b)
-qweights{T<:AbstractFloat}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = wglj(z, a, b)
-qweights{T<:AbstractFloat}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = wgrjm(z, a, b)
-qweights{T<:AbstractFloat}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = wgrjp(z, a, b)
+qweights{T<:Number}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = wgj(z, a, b)
+qweights{T<:Number}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = wglj(z, a, b)
+qweights{T<:Number}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = wgrjm(z, a, b)
+qweights{T<:Number}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = wgrjp(z, a, b)
 
 """
 Return the derivative matrix of a Gauss type quadrature 
 """
-qdiff{T<:AbstractFloat}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = dgj(z, a, b)
-qdiff{T<:AbstractFloat}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = dglj(z, a, b)
-qdiff{T<:AbstractFloat}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = dgrjm(z, a, b)
-qdiff{T<:AbstractFloat}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, a, b)
+qdiff{T<:Number}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = dgj(z, a, b)
+qdiff{T<:Number}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = dglj(z, a, b)
+qdiff{T<:Number}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = dgrjm(z, a, b)
+qdiff{T<:Number}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, a, b)
 
 
 """
 Create a `Quadrature` object given its type, order and weights.
 """
-function Quadrature{T<:AbstractFloat, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0, 
+function Quadrature{T<:Number, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0, 
                                                            ::Type{T}=Float64)
     aa = convert(T, a)
     bb = convert(T, b)
