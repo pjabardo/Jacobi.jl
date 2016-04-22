@@ -77,15 +77,15 @@ zglj(Q, a) = zglj(Q, a, zero(a))
 
 
 function zgrjm{T<:AbstractFloat}(Q, a, b, ::Type{T}=Float64)
-    z = jacobi_zeros(Q-1, a, b+1)
+    z = jacobi_zeros(Q-1, a, b+1, T)
     return [-one(T); z]
 end
 zgrjm(Q) = zgrjm(Q, 0.0, 0.0)
 zgrjm(Q, a) = zgrjm(Q, a, zero(a))
 
 
-function zgrjp{T<:Number}(Q, a, b, ::Type{T}=Float64)
-    z = jacobi_zeros(Q-1, a+1, b)
+function zgrjp{T<:AbsatractFloat}(Q, a, b, ::Type{T}=Float64)
+    z = jacobi_zeros(Q-1, a+1, b, T)
     return [z; one(T)]
 end
 zgrjp(Q) = zgrjp(Q, 0.0, 0.0)
@@ -97,14 +97,14 @@ function wgj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     b = convert(T, beta)
 
     Q::Int = length(z)
-    
-    coef = 2^(a+b+1) * ( gamma(a+Q+1) / gamma(Q+1) ) * (gamma(b+Q+1) / gamma(a+b+Q+1))
+    o = one(T)
+    coef = 2^(a+b+1) * ( gamma(a+Q+1) / gamma(Q+o) ) * (gamma(b+Q+1) / gamma(a+b+Q+1))
     w = [djacobi(zz, Q, a, b) for zz=z]
     
     for i = 1:Q
         ww = w[i]
         x = z[i]
-        w[i] = 1 / (ww*ww) * coef / (1 - x*x)
+        w[i] = o / (ww*ww) * coef / (o - x*x)
     end
 
     return w
@@ -114,10 +114,10 @@ end
 function wglj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     a = convert(T, alpha)
     b = convert(T, beta)
-
+    o = one(T)
     Q = length(z)
 
-    coef = 2^(a+b+1) / (Q-1) * (gamma(a+Q) / gamma(Q)) * (gamma(b+Q) / gamma(a+b+Q+1))
+    coef = 2^(a+b+1) / (Q-o) * (gamma(a+Q) / gamma(Q*o)) * (gamma(b+Q) / gamma(a+b+Q+1))
     
     w = [jacobi(zz, Q-1, a, b) for zz=z]
     w[1] = (b+1) * coef / (w[1]*w[1])
@@ -134,19 +134,20 @@ end
 function wgrjm{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     a = convert(T, alpha)
     b = convert(T, beta)
+    o = one(T)
     
     Q = length(z)
 
-    coef = 2^(a+b) / (b+Q) * (gamma(a+Q) / gamma(Q)) * (gamma(b+Q) / gamma(a+b+Q+1))
+    coef = 2^(a+b) / (b+Q) * (gamma(a+Q) / gamma(Q*o)) * (gamma(b+Q) / gamma(a+b+Q+1))
 
     w = [jacobi(zz, Q-1, a, b) for zz=z]
 
     for i = 1:Q
         ww = w[i]
-        w[i] = coef / (ww*ww) * (1 - z[i])
+        w[i] = coef / (ww*ww) * (o - z[i])
     end
 
-    w[1] *= (b + 1)
+    w[1] *= (b + o)
 
     return w
 end
@@ -156,17 +157,18 @@ function wgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     a = convert(T, alpha)
     b = convert(T, beta)
     Q = length(z)
+    o = one(T)
 
-    coef = 2^(a+b) / (a+Q) * (gamma(a+Q) / gamma(Q)) * (gamma(b+Q) / gamma(a+b+Q+1))
+    coef = 2^(a+b) / (a+Q) * (gamma(a+Q) / gamma(Q*o)) * (gamma(b+Q) / gamma(a+b+Q+1))
 
     w = [jacobi(zz, Q-1, a, b) for zz=z]
 
     for i = 1:Q
         ww = w[i]
-        w[i] = coef / (ww*ww) * (1 + z[i])
+        w[i] = coef / (ww*ww) * (o + z[i])
     end
 
-    w[Q] *= (a + 1)
+    w[Q] *= (a + o)
 
     return w
 end
@@ -177,7 +179,8 @@ function dgj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     Q = length(z)
     a = convert(T, alpha)
     b = convert(T, beta)
-    
+    o = one(T)
+
     djac = [djacobi(zz, Q, alpha, beta) for zz=z]
     
     D = zeros(T, Q, Q)
@@ -186,7 +189,7 @@ function dgj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
             if i != k
                 D[i,k] = (djac[i]/djac[k]) / (z[i]-z[k])
             else
-                D[i,i] = (a-b + (a + b + 2) * z[i]) / (1 - z[k]^2) / 2
+                D[i,i] = (a-b + (a + b + 2) * z[i]) / (o - z[k]^2) / 2
             end
         end
     end
@@ -200,12 +203,13 @@ function dglj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     Q = length(z)
     a = convert(T, alpha)
     b = convert(T, beta)
+    o = one(T)
 
     djac = zeros(T,Q)
-    djac[1] = (-1)^Q * 2 * gamma(Q + b) / (gamma(Q-1) * gamma(b+2))
-    djac[Q] = -2*gamma(Q+a) / (gamma(Q-1)*gamma(a+2))
+    djac[1] = (-1)^Q * 2  *  gamma(Q + b) / (gamma(Q-o) * gamma(b+2))
+    djac[Q] = -2*gamma(Q+a) / (gamma(Q-o)*gamma(a+2))
     for i = 2:(Q-1)
-        djac[i] = (1-z[i]*z[i]) * djacobi(z[i], Q-2, a+1, b+1)
+        djac[i] = (o-z[i]*z[i]) * djacobi(z[i], Q-2, a+1, b+1)
     end
 
     D = zeros(T, Q, Q)
@@ -214,7 +218,7 @@ function dglj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
             if i != k
                 D[i,k] = (djac[i]/djac[k]) / (z[i]-z[k])
             else
-                D[i,i] = (a - b + (a + b)*z[i]) / (2*(1 - z[i]^2))
+                D[i,i] = (a - b + (a + b)*z[i]) / (2*(o - z[i]^2))
             end
         end
     end
@@ -232,12 +236,13 @@ function dgrjm{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     Q = length(z)
     a = convert(T, alpha)
     b = convert(T, beta)
-
+    o = one(T)
+    
     djac = zeros(T,Q)
     for i = 2:Q
         djac[i] = (1+z[i]) * djacobi(z[i], Q-1, a, b+1)
     end
-    djac[1] = (-1)^(Q-1) *  gamma(Q + b + 1) / (gamma(Q) * gamma(b+2))
+    djac[1] = (-1)^(Q-1) *  gamma(Q + b + 1) / (gamma(Q*o) * gamma(b+2))
 
     D = zeros(T, Q, Q)
     for i = 1:Q
@@ -262,12 +267,13 @@ function dgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
     Q = length(z)
     a = convert(T, alpha)
     b = convert(T, beta)
-
+    o = one(T)
+    
     djac = zeros(T,Q)
     for i = 1:(Q-1)
         djac[i] = (1-z[i]) * djacobi(z[i], Q-1, a+1, b)
     end
-    djac[Q] = - gamma(Q + a + 1) / (gamma(Q) * gamma(a+2))
+    djac[Q] = - gamma(Q + a + 1) / (gamma(Q*o) * gamma(a+2))
 
     D = zeros(T, Q, Q)
     for i = 1:Q
