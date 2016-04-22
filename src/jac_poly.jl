@@ -101,9 +101,8 @@ djacobi{T<:Number}(x::AbstractArray{T}, n) = djacobi!(x, n, zero(T), zero(T), ze
 djacobi{T<:Number}(x::AbstractArray{T}, n, a) = djacobi!(x, n, a, zero(T), zeros(x))
 
 
-import Base.eps
-
-eps{T<:AbstractFloat}(::Type{Complex{T}}) = eps(T)
+eps1{T<:AbstractFloat}(::Type{T}) = eps(T)
+eps1{T<:AbstractFloat}(::Type{Complex{T}}) = eps(T)
 
 """
 Compute the zeros of Jacobi polynomials
@@ -132,7 +131,7 @@ function jacobi_zeros!{T<:Number}(m, alpha, beta, x::AbstractArray{T})
     b = convert(T,beta)
 
     const MAXITER = 500
-    const EPS::T = 100 * eps(T)
+    const EPS::T = 100 * eps1(T)
     local i, k, iter=0
 
     for k = 1:m
