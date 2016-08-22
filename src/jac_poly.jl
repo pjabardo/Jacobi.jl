@@ -177,12 +177,10 @@ end
 jacobi_zeros(m) = jacobi_zeros(m, 0.0, 0.0)
 jacobi_zeros(m, a) = jacobi_zeros(m, a, zero(a))
 
-if VERSION >= v"0.4-"
-    @doc (@doc jacobi) djacobi
-    @doc (@doc jacobi) djacobi!
-    @doc (@doc jacobi) jacobi!
-    @doc (@doc jacobi_zeros!) jacobi_zeros
-end
+@doc (@doc jacobi) djacobi
+@doc (@doc jacobi) djacobi!
+@doc (@doc jacobi) jacobi!
+@doc (@doc jacobi_zeros!) jacobi_zeros
 
 
     

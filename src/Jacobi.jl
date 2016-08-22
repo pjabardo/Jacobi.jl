@@ -17,11 +17,6 @@ export QUADRATURE_TYPE, GJ, GLJ, GRJM, GRJP
 export qzeros, qweights, qdiff, Quadrature
 export qalpha, qbeta
 
-if VERSION < v"0.4-"
-    typealias AbstractFloat FloatingPoint
-    macro doc(x...)
-    end
-end
 
 
 include("jac_poly.jl")

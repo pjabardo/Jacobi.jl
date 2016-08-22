@@ -54,11 +54,10 @@ end
 dlegendre{T<:Number}(x::AbstractArray{T}, n) = dlegendre!(x, n, zeros(x))
 legendre_zeros(m) = jacobi_zeros(m)
 
-if VERSION >= v"0.4-"
-    @doc (@doc legendre) legendre!
-    @doc (@doc legendre) dlegendre
-    @doc (@doc legendre) dlegendre!
-    @doc (@doc jacobi_zeros!) legendre_zeros
-end
+@doc (@doc legendre) legendre!
+@doc (@doc legendre) dlegendre
+@doc (@doc legendre) dlegendre!
+@doc (@doc jacobi_zeros!) legendre_zeros
+
 
 

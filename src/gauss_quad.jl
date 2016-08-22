@@ -427,20 +427,18 @@ end
 
 
 
-if VERSION >= v"0.4-"
-    @doc (@doc zgj) zglj
-    @doc (@doc zgj) zgrjm
-    @doc (@doc zgj) zgrjp
-    
-    @doc (@doc zgj) wgj
-    @doc (@doc zgj) wglj
-    @doc (@doc zgj) wgrjm
-    @doc (@doc zgj) wgrjp
-    
-    @doc (@doc zgj) dgj
-    @doc (@doc zgj) dglj
-    @doc (@doc zgj) dgrjm
-    @doc (@doc zgj) dgrjp
-    
-    @doc (@doc lagrange) lagrange!
-end
+@doc (@doc zgj) zglj
+@doc (@doc zgj) zgrjm
+@doc (@doc zgj) zgrjp
+
+@doc (@doc zgj) wgj
+@doc (@doc zgj) wglj
+@doc (@doc zgj) wgrjm
+@doc (@doc zgj) wgrjp
+
+@doc (@doc zgj) dgj
+@doc (@doc zgj) dglj
+@doc (@doc zgj) dgrjm
+@doc (@doc zgj) dgrjp
+
+@doc (@doc lagrange) lagrange!
