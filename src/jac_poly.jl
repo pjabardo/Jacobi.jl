@@ -2,16 +2,16 @@
 Computes Jacobi polynomial and derivatives of Jacobi polynomials.
 
 This function computes the jacobi polynomial of degree `n` with weights
-`a` and `b` at point x (\$P_n^{a,b}(x)\$). There are several variants of the function 
+`a` and `b` at point x (\$P_n^{a,b}(x)\$). There are several variants of the function
 with default values:
- 
+
  * `jacobi(x, n)` (`a` and `b` are both zero)
  * `jacobi(x, n, a)` (`b` is zero)
  * `jacobi(x, n, a, b) where `x` is an array
  * `jacobi!(x, n, a, b, y)` modifying array version of the function
 
 The derivative of Jacobi polynomials (\$\\frac{dP_n^{a,b}(x)}{dx}\$)are computed with functions that add a `d` in front of its name:
- 
+
  * `djacobi`
  * `djacobi!`
 
@@ -43,11 +43,11 @@ function jacobi(x, n, a, b)
     elseif n==1
         return ox/2 * (a - b + (a + b + 2)*x)
     end
-    
+
     p0 = ox
     p1 = ox/2 * (a - b + (a + b + 2)*x)
     p2 = zx;
-    
+
     for i = 1:(n-1)
 	a1 = 2*(i+1)*(i+a+b+1)*(2*i+a+b);
 	a2 = (2*i+a+b+1)*(a*a-b*b);
@@ -112,7 +112,7 @@ This function computes the zeros of Jacobi polynomials:
  * \$P_m^{a,b}(x) = 0 \$
 
 The `jacobi_zeros!` is the modifying version and the memory where the zeros
-will be stored are preallocated. The non-modifying version, `jacobi_zeros` 
+will be stored are preallocated. The non-modifying version, `jacobi_zeros`
 allocates a the memory and calls the modifying version. The function `legendre_zeros`
 compute the zeros of Legendre polynomials (`a = b = 0`)
 
@@ -132,7 +132,7 @@ function jacobi_zeros!{T<:Number}(m, alpha, beta, x::AbstractArray{T})
 
     const MAXITER = 500
     const EPS::T = 100 * eps1(T)
-    local i, k, iter=0
+    local i; local k; local iter=0
 
     for k = 1:m
         # Initial guess.
@@ -146,30 +146,30 @@ function jacobi_zeros!{T<:Number}(m, alpha, beta, x::AbstractArray{T})
             for i = 1:(k-1)
                 s += o/(r - x[i])
             end
-            
+
             poly = jacobi(r, m, a, b)
             delta = -poly / (djacobi(r, m, a, b) - poly*s)
-            
+
             r += delta
             iter += 1
-            
+
             if iter > MAXITER
                 throw("Program did not converge")
             end
-            
+
             if abs(delta) < abs(EPS)
                 break
             end
         end
         x[k] = r
     end
-        
-    return x
-        
-end
-    
 
-  
+    return x
+
+end
+
+
+
 function jacobi_zeros{T<:Number}(m, a, b, ::Type{T}=Float64)
     jacobi_zeros!(m, a, b, zeros(T,m))
 end
@@ -181,6 +181,3 @@ jacobi_zeros(m, a) = jacobi_zeros(m, a, zero(a))
 @doc (@doc jacobi) djacobi!
 @doc (@doc jacobi) jacobi!
 @doc (@doc jacobi_zeros!) jacobi_zeros
-
-
-    
