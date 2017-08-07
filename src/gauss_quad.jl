@@ -1,22 +1,22 @@
-abstract QUADRATURE_TYPE
+abstract type QUADRATURE_TYPE end
 
 type GJ <: QUADRATURE_TYPE end
 type GLJ <: QUADRATURE_TYPE end
 type GRJM <: QUADRATURE_TYPE end
 type GRJP <: QUADRATURE_TYPE end
-    
+
 """
 Gauss-type quadrature
 
 Numerical integrals in the domain [-1,1] can be computed
-from knowledge of the function in a set of nodes and the 
+from knowledge of the function in a set of nodes and the
 corresponding nodes, such that
 
 \$\$
 \int_{-1}^1 (1-x)^a (1+x)^b (1-xf(x)\\:dx \\approx \\sum_{i=1}^N w^{a,b}_i f(x_i)
 \$\$
 
-The parameters `a` and `b` form a famility of quadrature rules. But if one or both 
+The parameters `a` and `b` form a famility of quadrature rules. But if one or both
 of the ends are specified, other quadrature families are possible:
 
  * No ends are specified, Gauss-Jacobi quadrature (GJ)
@@ -31,7 +31,7 @@ To compute the nodes, the following functions are available:
  * `zgrjp` (Gauss-Radau-Jacobi, +1)
 
 All these functions have the following parameters:
- 
+
  * `Q`  Number of quadrature nodes
  * `a` (a) weight
  * `b` (b) weight
@@ -100,7 +100,7 @@ function wgj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     o = one(T)
     coef = 2^(a+b+1) * ( gamma(a+Q+1) / gamma(Q+o) ) * (gamma(b+Q+1) / gamma(a+b+Q+1))
     w = [djacobi(zz, Q, a, b) for zz=z]
-    
+
     for i = 1:Q
         ww = w[i]
         x = z[i]
@@ -118,7 +118,7 @@ function wglj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     Q = length(z)
 
     coef = 2^(a+b+1) / (Q-o) * (gamma(a+Q) / gamma(Q*o)) * (gamma(b+Q) / gamma(a+b+Q+1))
-    
+
     w = [jacobi(zz, Q-1, a, b) for zz=z]
     w[1] = (b+1) * coef / (w[1]*w[1])
     w[Q] = (a+1) * coef / (w[Q]*w[Q])
@@ -135,7 +135,7 @@ function wgrjm{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     a = convert(T, alpha)
     b = convert(T, beta)
     o = one(T)
-    
+
     Q = length(z)
 
     coef = 2^(a+b) / (b+Q) * (gamma(a+Q) / gamma(Q*o)) * (gamma(b+Q) / gamma(a+b+Q+1))
@@ -175,14 +175,14 @@ end
 
 
 function dgj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
-    
+
     Q = length(z)
     a = convert(T, alpha)
     b = convert(T, beta)
     o = one(T)
 
     djac = [djacobi(zz, Q, alpha, beta) for zz=z]
-    
+
     D = zeros(T, Q, Q)
     for i = 1:Q
         for k = 1:Q
@@ -193,13 +193,13 @@ function dgj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
             end
         end
     end
-    
+
     return D
 end
 
 
 function dglj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
-    
+
     Q = length(z)
     a = convert(T, alpha)
     b = convert(T, beta)
@@ -222,7 +222,7 @@ function dglj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
             end
         end
     end
- 
+
     D[1,1] = (a - (Q-1)*(Q+a+b)) / (2*(b + 2))
     D[Q,Q] = -(b - (Q-1)*(Q+a+b)) / (2*(a + 2))
 
@@ -232,12 +232,12 @@ end
 
 
 function dgrjm{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
-    
+
     Q = length(z)
     a = convert(T, alpha)
     b = convert(T, beta)
     o = one(T)
-    
+
     djac = zeros(T,Q)
     for i = 2:Q
         djac[i] = (1+z[i]) * djacobi(z[i], Q-1, a, b+1)
@@ -254,7 +254,7 @@ function dgrjm{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
             end
         end
     end
- 
+
     D[1,1] = -(Q-1)*(Q+a+b+1) / (2*(b + 2))
 
     return D
@@ -263,12 +263,12 @@ end
 
 
 function dgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
-    
+
     Q = length(z)
     a = convert(T, alpha)
     b = convert(T, beta)
     o = one(T)
-    
+
     djac = zeros(T,Q)
     for i = 1:(Q-1)
         djac[i] = (1-z[i]) * djacobi(z[i], Q-1, a+1, b)
@@ -285,7 +285,7 @@ function dgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
             end
         end
     end
- 
+
     D[Q,Q] = (Q-1)*(Q+a+b+1) / (2*(a + 2))
 
     return D
@@ -296,7 +296,7 @@ end
 """
 Abstract interface of Gauss-type quadrature rules
 
-Can be used for any `AbstractFloat` type data. 
+Can be used for any `AbstractFloat` type data.
 """
 type Quadrature{T<:Number,QT<:QUADRATURE_TYPE}
     "Number of quadrature nodes"
@@ -322,7 +322,7 @@ qzeros{T<:Number}(::Type{GRJM}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjm(Q, a, b,
 qzeros{T<:Number}(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjp(Q, a, b, T)
 
 """
-Return the weights of a Gauss type quadrature 
+Return the weights of a Gauss type quadrature
 """
 qweights{T<:Number}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = wgj(z, a, b)
 qweights{T<:Number}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = wglj(z, a, b)
@@ -330,7 +330,7 @@ qweights{T<:Number}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = wgrjm(z, a, b
 qweights{T<:Number}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = wgrjp(z, a, b)
 
 """
-Return the derivative matrix of a Gauss type quadrature 
+Return the derivative matrix of a Gauss type quadrature
 """
 qdiff{T<:Number}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = dgj(z, a, b)
 qdiff{T<:Number}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = dglj(z, a, b)
@@ -341,7 +341,7 @@ qdiff{T<:Number}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, a, b)
 """
 Create a `Quadrature` object given its type, order and weights.
 """
-function Quadrature{T<:Number, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0, 
+function Quadrature{T<:Number, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0,
                                                            ::Type{T}=Float64)
     aa = convert(T, a)
     bb = convert(T, b)
@@ -372,7 +372,7 @@ Compute the Lagrange polynomial
 This function computes the Lagrange polynomial at point `x` corresponding to
 the `i`-th node of the set `z`
 
-There is also a modifying version `lagrange!` used to computing the polynomials 
+There is also a modifying version `lagrange!` used to computing the polynomials
 at several points of an array `x`
 """
 function lagrange(i, x, z)
@@ -405,16 +405,16 @@ lagrange{T<:Number}(i, x::AbstractArray{T}, z) = lagrange!(i, x, z, zeros(x))
 """
 Interpolation matrix
 
-Often it is necessary to compute the values of a function approximated using 
+Often it is necessary to compute the values of a function approximated using
 Lagrange interpolation through a set of points `z`. If this will be repeated
-often, a matrix can be computed that allows the easy computation using the simple 
+often, a matrix can be computed that allows the easy computation using the simple
 expression `fx = Imat * fz`
 """
 function interp_mat{T<:Number}(x::AbstractArray{T}, z::AbstractArray{T})
 
     Q = length(z)
     np = length(x)
-    
+
     Imat = zeros(T, np, Q)
     for i = 1:Q, k=1:np
         Imat[k,i] = lagrange(i, x[k], z)
