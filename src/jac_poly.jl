@@ -66,7 +66,7 @@ jacobi(x, n, a) = jacobi(x, n, a, zero(x))
 
 
 
-function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
+function jacobi!(x::AbstractArray{T}, n, a, b, y::AbstractArray{T}) where {T<:Number}
 
     m = length(x)
     for i = 1:m
@@ -75,9 +75,9 @@ function jacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
     return y
 end
 
-jacobi{T<:Number}(x::AbstractArray{T}, n, a, b) = jacobi!(x, n, a, b, zeros(x))
-jacobi{T<:Number}(x::AbstractArray{T}, n) = jacobi!(x, n, zero(T), zero(T), zeros(x))
-jacobi{T<:Number}(x::AbstractArray{T}, n, a) = jacobi!(x, n, a, zero(T), zeros(x))
+jacobi(x::AbstractArray{T}, n, a, b) where {T<:Number} = jacobi!(x, n, a, b, zeros(x))
+jacobi(x::AbstractArray{T}, n) where {T<:Number} = jacobi!(x, n, zero(T), zero(T), zeros(x))
+jacobi(x::AbstractArray{T}, n, a) where {T<:Number} = jacobi!(x, n, a, zero(T), zeros(x))
 
 
 
@@ -87,7 +87,7 @@ djacobi(x, n, a, b) =  one(x)/2 * (a + b + n + 1) * jacobi(x, n-1, a+1, b+1)
 djacobi(x, n) = djacobi(x, n, zero(x), zero(x))
 djacobi(x, n, a) = djacobi(x, n, a, zero(x))
 
-function djacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
+function djacobi!(x::AbstractArray{T}, n, a, b, y::AbstractArray{T}) where {T<:Number}
 
     m = length(x)
     for i = 1:m
@@ -96,13 +96,13 @@ function djacobi!{T<:Number}(x::AbstractArray{T}, n, a, b, y::AbstractArray{T})
     return y
 end
 
-djacobi{T<:Number}(x::AbstractArray{T}, n, a, b) = djacobi!(x, n, a, b, zeros(x))
-djacobi{T<:Number}(x::AbstractArray{T}, n) = djacobi!(x, n, zero(T), zero(T), zeros(x))
-djacobi{T<:Number}(x::AbstractArray{T}, n, a) = djacobi!(x, n, a, zero(T), zeros(x))
+djacobi(x::AbstractArray{T}, n, a, b) where {T<:Number} = djacobi!(x, n, a, b, zeros(x))
+djacobi(x::AbstractArray{T}, n) where {T<:Number} = djacobi!(x, n, zero(T), zero(T), zeros(x))
+djacobi(x::AbstractArray{T}, n, a) where {T<:Number} = djacobi!(x, n, a, zero(T), zeros(x))
 
 
-eps1{T<:AbstractFloat}(::Type{T}) = eps(T)
-eps1{T<:AbstractFloat}(::Type{Complex{T}}) = eps(T)
+eps1(::Type{T}) where {T<:AbstractFloat} = eps(T)
+eps1(::Type{Complex{T}}) where {T<:AbstractFloat} = eps(T)
 
 """
 Compute the zeros of Jacobi polynomials
@@ -122,7 +122,7 @@ using Jacobi
 z = jacobi_zeros(7, 0.3, 0.2)
 ```
 """
-function jacobi_zeros!{T<:Number}(m, alpha, beta, x::AbstractArray{T})
+function jacobi_zeros!(m, alpha, beta, x::AbstractArray{T}) where {T<:Number}
 
     o = one(T)
     z = zero(T)
@@ -170,7 +170,7 @@ end
 
 
 
-function jacobi_zeros{T<:Number}(m, a, b, ::Type{T}=Float64)
+function jacobi_zeros(m, a, b, ::Type{T}=Float64) where {T<:Number}
     jacobi_zeros!(m, a, b, zeros(T,m))
 end
 

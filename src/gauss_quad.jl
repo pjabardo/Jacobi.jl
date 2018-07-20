@@ -60,14 +60,14 @@ To compute derivatives. The following functions are used to compute the derivati
 
 See the notebooks availbale with the package.
 """
-function zgj{T<:Number}(Q, a, b, ::Type{T}=Float64)
+function zgj(Q, a, b, ::Type{T}=Float64) where {T<:Number}
     jacobi_zeros(Q, a, b, T)
 end
 
 zgj(Q) = zgj(Q, 0.0, 0.0)
 zgj(Q, a) = zgj(Q, a, zero(a))
 
-function zglj{T<:Number}(Q, a, b, ::Type{T}=Float64)
+function zglj(Q, a, b, ::Type{T}=Float64) where {T<:Number}
     z = jacobi_zeros(Q-2, a+1, b+1, T)
     o = one(T)
     return [-o; z; o]
@@ -76,7 +76,7 @@ zglj(Q) = zglj(Q, 0.0, 0.0)
 zglj(Q, a) = zglj(Q, a, zero(a))
 
 
-function zgrjm{T<:Number}(Q, a, b, ::Type{T}=Float64)
+function zgrjm(Q, a, b, ::Type{T}=Float64) where {T<:Number}
     z = jacobi_zeros(Q-1, a, b+1, T)
     return [-one(T); z]
 end
@@ -84,7 +84,7 @@ zgrjm(Q) = zgrjm(Q, 0.0, 0.0)
 zgrjm(Q, a) = zgrjm(Q, a, zero(a))
 
 
-function zgrjp{T<:Number}(Q, a, b, ::Type{T}=Float64)
+function zgrjp(Q, a, b, ::Type{T}=Float64) where {T<:Number}
     z = jacobi_zeros(Q-1, a+1, b, T)
     return [z; one(T)]
 end
@@ -92,7 +92,7 @@ zgrjp(Q) = zgrjp(Q, 0.0, 0.0)
 zgrjp(Q, a) = zgrjp(Q, a, zero(a))
 
 
-function wgj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
+function wgj(z::AbstractArray{T}, alpha=0, beta=0) where {T<:Number}
     a = convert(T, alpha)
     b = convert(T, beta)
 
@@ -111,7 +111,7 @@ function wgj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
 end
 
 
-function wglj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
+function wglj(z::AbstractArray{T}, alpha=0, beta=0) where {T<:Number}
     a = convert(T, alpha)
     b = convert(T, beta)
     o = one(T)
@@ -131,7 +131,7 @@ function wglj{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
     return w
 end
 
-function wgrjm{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
+function wgrjm(z::AbstractArray{T}, alpha=0, beta=0) where {T<:Number}
     a = convert(T, alpha)
     b = convert(T, beta)
     o = one(T)
@@ -153,7 +153,7 @@ function wgrjm{T<:Number}(z::AbstractArray{T}, alpha=0, beta=0)
 end
 
 
-function wgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function wgrjp(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
     a = convert(T, alpha)
     b = convert(T, beta)
     Q = length(z)
@@ -174,7 +174,7 @@ function wgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-function dgj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function dgj(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
 
     Q = length(z)
     a = convert(T, alpha)
@@ -198,7 +198,7 @@ function dgj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-function dglj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function dglj(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
 
     Q = length(z)
     a = convert(T, alpha)
@@ -231,7 +231,7 @@ function dglj{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-function dgrjm{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function dgrjm(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
 
     Q = length(z)
     a = convert(T, alpha)
@@ -262,7 +262,7 @@ function dgrjm{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
 end
 
 
-function dgrjp{T<:Number}(z::AbstractArray{T,1}, alpha=0, beta=0)
+function dgrjp(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
 
     Q = length(z)
     a = convert(T, alpha)
@@ -316,33 +316,33 @@ end
 """
 Return the zeros of a Gauss type quadrature
 """
-qzeros{T<:Number}(::Type{GJ}, Q, a=0, b=0, ::Type{T}=Float64) = zgj(Q, a, b, T)
-qzeros{T<:Number}(::Type{GLJ}, Q, a=0, b=0, ::Type{T}=Float64) = zglj(Q, a, b, T)
-qzeros{T<:Number}(::Type{GRJM}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjm(Q, a, b, T)
-qzeros{T<:Number}(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) = zgrjp(Q, a, b, T)
+qzeros(::Type{GJ}, Q, a=0, b=0, ::Type{T}=Float64) where {T<:Number} = zgj(Q, a, b, T)
+qzeros(::Type{GLJ}, Q, a=0, b=0, ::Type{T}=Float64) where {T<:Number} = zglj(Q, a, b, T)
+qzeros(::Type{GRJM}, Q, a=0, b=0, ::Type{T}=Float64) where {T<:Number} = zgrjm(Q, a, b, T)
+qzeros(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) where {T<:Number} = zgrjp(Q, a, b, T)
 
 """
 Return the weights of a Gauss type quadrature
 """
-qweights{T<:Number}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = wgj(z, a, b)
-qweights{T<:Number}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = wglj(z, a, b)
-qweights{T<:Number}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = wgrjm(z, a, b)
-qweights{T<:Number}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = wgrjp(z, a, b)
+qweights(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wgj(z, a, b)
+qweights(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wglj(z, a, b)
+qweights(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wgrjm(z, a, b)
+qweights(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wgrjp(z, a, b)
 
 """
 Return the derivative matrix of a Gauss type quadrature
 """
-qdiff{T<:Number}(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) = dgj(z, a, b)
-qdiff{T<:Number}(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) = dglj(z, a, b)
-qdiff{T<:Number}(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) = dgrjm(z, a, b)
-qdiff{T<:Number}(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) = dgrjp(z, a, b)
+qdiff(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dgj(z, a, b)
+qdiff(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dglj(z, a, b)
+qdiff(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dgrjm(z, a, b)
+qdiff(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dgrjp(z, a, b)
 
 
 """
 Create a `Quadrature` object given its type, order and weights.
 """
-function Quadrature{T<:Number, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0,
-                                                           ::Type{T}=Float64)
+function Quadrature(::Type{QT}, Q, a=0, b=0,
+                    ::Type{T}=Float64) where {T<:Number, QT<:QUADRATURE_TYPE}
     aa = convert(T, a)
     bb = convert(T, b)
     z = qzeros(QT, Q, aa, bb, T)
@@ -352,19 +352,19 @@ function Quadrature{T<:Number, QT<:QUADRATURE_TYPE}(::Type{QT}, Q, a=0, b=0,
 end
 
 "Return quadrature type"
-qtype{T,QT}(q::Quadrature{T,QT}) = QT
+qtype(q::Quadrature{T,QT}) where {T,QT} = QT
 "Return quadrature nodes"
-qzeros{QT<:Quadrature}(q::QT) = q.z
+qzeros(q::QT) where {QT<:Quadrature} = q.z
 "Return quadrature weights"
-qweights{QT<:Quadrature}(q::QT) = q.w
+qweights(q::QT) where {QT<:Quadrature} = q.w
 "Return quadrature derivative matrix"
-qdiff{QT<:Quadrature}(q::QT) = q.D
+qdiff(q::QT) where {QT<:Quadrature} = q.D
 "Return number of quadrature nodes"
-num_points{QT<:Quadrature}(q::QT) = q.Q
+num_points(q::QT) where {QT<:Quadrature} = q.Q
 "Return quadrature `a` weight"
-qalpha{QT<:Quadrature}(q::QT) = q.a
+qalpha(q::QT) where {QT<:Quadrature} = q.a
 "Return quadrature `b` weight"
-qbeta{QT<:Quadrature}(q::QT) = q.b
+qbeta(q::QT) where {QT<:Quadrature} = q.b
 
 """
 Compute the Lagrange polynomial
@@ -391,14 +391,14 @@ function lagrange(i, x, z)
     return l
 end
 
-function lagrange!{T<:Number}(i, x::AbstractArray{T}, z, y::AbstractArray{T})
+function lagrange!(i, x::AbstractArray{T}, z, y::AbstractArray{T}) where {T<:Number}
     for k = 1:length(x)
         y[k] = lagrange(i, x[k], z)
     end
     return y
 end
 
-lagrange{T<:Number}(i, x::AbstractArray{T}, z) = lagrange!(i, x, z, zeros(x))
+lagrange(i, x::AbstractArray{T}, z) where {T<:Number} = lagrange!(i, x, z, zeros(x))
 
 
 
@@ -410,7 +410,7 @@ Lagrange interpolation through a set of points `z`. If this will be repeated
 often, a matrix can be computed that allows the easy computation using the simple
 expression `fx = Imat * fz`
 """
-function interp_mat{T<:Number}(x::AbstractArray{T}, z::AbstractArray{T})
+function interp_mat(x::AbstractArray{T}, z::AbstractArray{T}) where {T<:Number}
 
     Q = length(z)
     np = length(x)
