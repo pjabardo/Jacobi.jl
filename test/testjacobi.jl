@@ -148,7 +148,7 @@ end
 # Chebyshev polynomials
 # Coefficients from Abramowiz
 
-xx = linspace(-1.0, 1.0, 21)
+xx = -1.0:0.1:1.0
 
 using Polynomials
 
