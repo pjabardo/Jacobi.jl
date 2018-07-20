@@ -14,7 +14,7 @@ X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
 q = Quadrature(GJ, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test_approx_eq_eps abs(Xg-X) 0.0 200*eps(Xg)
+@test abs(Xg-X) < 200*eps(Xg)
 
 # I'm not getting the precision I need for BigFloats. Should investigate further
 #X = polyval(p1_int, BigFloat(1.0)) - polyval(p1_int, BigInt(-1.0))
@@ -31,7 +31,7 @@ X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
 q = Quadrature(GJ, Q, 1.0, 2.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test_approx_eq_eps abs(Xg-X) 0.0 200*eps(Xg)
+@test abs(Xg-X) < 200*eps(Xg)
 
 # Test Gauss-Radau:
 # GRJM
@@ -43,13 +43,13 @@ X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
 q = Quadrature(GRJM, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test_approx_eq_eps abs(Xg-X) 0.0 200*eps(Xg)
+@test abs(Xg-X) < 200*eps(Xg)
 
 # GRJP
 q = Quadrature(GRJP, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test_approx_eq_eps abs(Xg-X) 0.0 200*eps(Xg)
+@test abs(Xg-X) < 200*eps(Xg)
 
 
 # Weights a=1, b=2 GRJM
@@ -59,7 +59,7 @@ X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
 q = Quadrature(GRJM, Q, 1.0, 2.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test_approx_eq_eps abs(Xg-X) 0.0 200*eps(Xg)
+@test abs(Xg-X) < 200*eps(Xg)
 
 
 # Weights a=1, b=2 GRJP
@@ -69,7 +69,7 @@ X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
 q = Quadrature(GRJP, Q, 1.0, 2.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test_approx_eq_eps abs(Xg-X) 0.0 200*eps(Xg)
+@test abs(Xg-X) < 200*eps(Xg)
 
 
 
@@ -84,7 +84,7 @@ X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
 q = Quadrature(GLJ, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test_approx_eq_eps abs(Xg-X) 0.0 200*eps(Xg)
+@test abs(Xg-X) < 200*eps(Xg)
 
 # Weights a=1, b=2 GLJ
 p2 = p * Poly([1, -1]) * Poly([1, 1])^2
@@ -93,7 +93,7 @@ X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
 q = Quadrature(GRJM, Q, 1.0, 2.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test_approx_eq_eps abs(Xg-X) 0.0 200*eps(Xg)
+@test abs(Xg-X) < 200*eps(Xg)
 
 
 # Testing derivatives:
@@ -107,7 +107,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000*eps(maxabs(dy))
+@test maximum(abs, dy-dyg) < 1000*eps(maximum(abs, dy))
 
 
 # GRJM
@@ -120,7 +120,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000*eps(maxabs(dy))
+@test maximum(abs, dy-dyg) < 1000*eps(maximum(abs, dy))
 
 
 
@@ -134,7 +134,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000*eps(maxabs(dy))
+@test maximum(abs, dy-dyg) < 1000*eps(maximum(abs, dy))
 
 
 # GLJ
@@ -147,7 +147,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000*eps(maxabs(dy))
+@test maximum(abs, dy-dyg) < 1000*eps(maximum(abs, dy))
 
 
 
@@ -165,7 +165,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000*eps(maxabs(dy))
+@test maximum(abs, dy-dyg) < 1000*eps(maximum(abs, dy))
 
 
 # GRJM
@@ -178,7 +178,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000*eps(maxabs(dy))
+@test maximum(abs, dy-dyg) < 1000*eps(maximum(abs, dy))
 
 
 
@@ -192,7 +192,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000*eps(maxabs(dy))
+@test maximum(abs, dy-dyg) < 1000*eps(maximum(abs, dy))
 
 
 # GLJ
@@ -205,7 +205,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000*eps(maxabs(dy))
+@test maximum(abs, dy-dyg) < 1000*eps(maximum(abs, dy))
 
 
 
@@ -222,6 +222,4 @@ z = qzeros(q)
 u = polyval(p, z)
 I = interp_mat(x, z)
 ui = I * u
-@test_approx_eq_eps maxabs(ui-ue) 0.0 200*eps(maxabs(u))
-
-
+@test maximum(abs, ui-ue) < 200*eps(maximum(abs, u))

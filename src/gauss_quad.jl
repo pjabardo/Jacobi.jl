@@ -12,9 +12,9 @@ Numerical integrals in the domain [-1,1] can be computed
 from knowledge of the function in a set of nodes and the
 corresponding nodes, such that
 
-\$\$
-\int_{-1}^1 (1-x)^a (1+x)^b (1-xf(x)\\:dx \\approx \\sum_{i=1}^N w^{a,b}_i f(x_i)
-\$\$
+```math
+\\int_{-1}^1 (1-x)^a (1+x)^b (1-xf(x)\\:dx \\approx \\sum_{i=1}^N w^{a,b}_i f(x_i)
+```
 
 The parameters `a` and `b` form a famility of quadrature rules. But if one or both
 of the ends are specified, other quadrature families are possible:
