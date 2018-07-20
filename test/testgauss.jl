@@ -1,7 +1,11 @@
 ### Testing quadrature related function
 using Jacobi
 using Polynomials
-using Base.Test
+@static if VERSION > v"0.7-"
+    using Test
+else
+    using Base.Test
+end
 
 Nmax= 20
 a = rand(1:6, Nmax)  # Coefficient for a ninth degree polynomial
