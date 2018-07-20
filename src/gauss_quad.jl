@@ -1,9 +1,9 @@
 abstract type QUADRATURE_TYPE end
 
-type GJ <: QUADRATURE_TYPE end
-type GLJ <: QUADRATURE_TYPE end
-type GRJM <: QUADRATURE_TYPE end
-type GRJP <: QUADRATURE_TYPE end
+struct GJ <: QUADRATURE_TYPE end
+struct GLJ <: QUADRATURE_TYPE end
+struct GRJM <: QUADRATURE_TYPE end
+struct GRJP <: QUADRATURE_TYPE end
 
 """
 Gauss-type quadrature
@@ -298,7 +298,7 @@ Abstract interface of Gauss-type quadrature rules
 
 Can be used for any `AbstractFloat` type data.
 """
-type Quadrature{T<:Number,QT<:QUADRATURE_TYPE}
+struct Quadrature{T<:Number,QT<:QUADRATURE_TYPE}
     "Number of quadrature nodes"
     Q::Int
     "a weight"

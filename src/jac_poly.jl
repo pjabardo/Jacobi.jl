@@ -130,8 +130,8 @@ function jacobi_zeros!(m, alpha, beta, x::AbstractArray{T}) where {T<:Number}
     a = convert(T,alpha)
     b = convert(T,beta)
 
-    const MAXITER = 500
-    const EPS::T = 100 * eps1(T)
+    MAXITER = 500
+    EPS::T = 100 * eps1(T)
     local i; local k; local iter=0
 
     for k = 1:m
