@@ -398,7 +398,7 @@ function lagrange!(i, x::AbstractArray{T}, z, y::AbstractArray{T}) where {T<:Num
     return y
 end
 
-lagrange(i, x::AbstractArray{T}, z) where {T<:Number} = lagrange!(i, x, z, zeros(x))
+lagrange(i, x::AbstractArray{T}, z) where {T<:Number} = lagrange!(i, x, z, similar(x))
 
 
 

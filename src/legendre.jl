@@ -36,7 +36,7 @@ function legendre!(x::AbstractArray{T}, n, y::AbstractArray{T}) where {T<:Number
     return y
 end
 
-legendre(x::AbstractArray{T}, n) where {T<:Number} = legendre!(x, n, zeros(x))
+legendre(x::AbstractArray{T}, n) where {T<:Number} = legendre!(x, n, similar(x))
 
 
 dlegendre(x, n) = djacobi(x, n)
@@ -51,7 +51,7 @@ function dlegendre!(x::AbstractArray{T}, n, y::AbstractArray{T}) where {T<:Numbe
     return y
 end
 
-dlegendre(x::AbstractArray{T}, n) where {T<:Number} = dlegendre!(x, n, zeros(x))
+dlegendre(x::AbstractArray{T}, n) where {T<:Number} = dlegendre!(x, n, similar(x))
 legendre_zeros(m) = jacobi_zeros(m)
 
 @doc (@doc legendre) legendre!

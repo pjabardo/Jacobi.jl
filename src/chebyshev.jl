@@ -48,7 +48,7 @@ function chebyshev!(x::AbstractArray{T}, n, y::AbstractArray{T}) where {T<:Numbe
     return y
 end
 
-chebyshev(x::AbstractArray{T}, n) where {T<:Number} = chebyshev!(x, n, zeros(x))
+chebyshev(x::AbstractArray{T}, n) where {T<:Number} = chebyshev!(x, n, similar(x))
 
 
 
@@ -84,7 +84,7 @@ function chebyshev2!(x::AbstractArray{T}, n, y::AbstractArray{T}) where {T<:Numb
     return y
 end
 
-chebyshev2(x::AbstractArray{T}, n) where {T<:Number} = chebyshev2!(x, n, zeros(x))
+chebyshev2(x::AbstractArray{T}, n) where {T<:Number} = chebyshev2!(x, n, similar(x))
 
 
 dchebyshev(x, n) = n * chebyshev2(x, n-1)
@@ -97,7 +97,7 @@ function dchebyshev!(x::AbstractArray{T}, n, y::AbstractArray{T}) where {T<:Numb
     return y
 end
 
-dchebyshev(x::AbstractArray{T}, n) where {T<:Number} = dchebyshev!(x, n, zeros(x))
+dchebyshev(x::AbstractArray{T}, n) where {T<:Number} = dchebyshev!(x, n, similar(x))
 
 
 function dchebyshev2(x, n)
@@ -136,7 +136,7 @@ function dchebyshev2!(x::AbstractArray{T}, n, y::AbstractArray{T}) where {T<:Num
     return y
 end
 
-dchebyshev2(x::AbstractArray{T}, n) where {T<:Number} = dchebyshev2!(x, n, zeros(x))
+dchebyshev2(x::AbstractArray{T}, n) where {T<:Number} = dchebyshev2!(x, n, similar(x))
 
 
 

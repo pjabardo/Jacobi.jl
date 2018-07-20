@@ -108,7 +108,7 @@ function peval(x, p)
     return y
 end
 function peval(x::AbstractArray, p)
-    y = zeros(x)
+    y = similar(x)
     for i = 1:length(x)
         y[i] = peval(x[i], p)
     end
@@ -165,7 +165,7 @@ du11 = polyder(u11)
 @test du11 == pdu11
 
 
-y1 = zeros(xx)
+y1 = similar(xx)
 
 # Testing Chebyshev polynomials of the first kind
 Jacobi.chebyshev!(xx, 11, y1)
@@ -205,8 +205,8 @@ end
 
 
 # Testing array function
-y1 = zeros(xx)
-y2 = zeros(xx)
+y1 = similar(xx)
+y2 = similar(xx)
 
 
 Jacobi.jacobi!(xx, 5, 0.8, 0.3, y1)

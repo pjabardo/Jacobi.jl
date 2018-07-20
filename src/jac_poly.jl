@@ -75,9 +75,9 @@ function jacobi!(x::AbstractArray{T}, n, a, b, y::AbstractArray{T}) where {T<:Nu
     return y
 end
 
-jacobi(x::AbstractArray{T}, n, a, b) where {T<:Number} = jacobi!(x, n, a, b, zeros(x))
-jacobi(x::AbstractArray{T}, n) where {T<:Number} = jacobi!(x, n, zero(T), zero(T), zeros(x))
-jacobi(x::AbstractArray{T}, n, a) where {T<:Number} = jacobi!(x, n, a, zero(T), zeros(x))
+jacobi(x::AbstractArray{T}, n, a, b) where {T<:Number} = jacobi!(x, n, a, b, similar(x))
+jacobi(x::AbstractArray{T}, n) where {T<:Number} = jacobi!(x, n, zero(T), zero(T), similar(x))
+jacobi(x::AbstractArray{T}, n, a) where {T<:Number} = jacobi!(x, n, a, zero(T), similar(x))
 
 
 
@@ -96,9 +96,9 @@ function djacobi!(x::AbstractArray{T}, n, a, b, y::AbstractArray{T}) where {T<:N
     return y
 end
 
-djacobi(x::AbstractArray{T}, n, a, b) where {T<:Number} = djacobi!(x, n, a, b, zeros(x))
-djacobi(x::AbstractArray{T}, n) where {T<:Number} = djacobi!(x, n, zero(T), zero(T), zeros(x))
-djacobi(x::AbstractArray{T}, n, a) where {T<:Number} = djacobi!(x, n, a, zero(T), zeros(x))
+djacobi(x::AbstractArray{T}, n, a, b) where {T<:Number} = djacobi!(x, n, a, b, similar(x))
+djacobi(x::AbstractArray{T}, n) where {T<:Number} = djacobi!(x, n, zero(T), zero(T), similar(x))
+djacobi(x::AbstractArray{T}, n, a) where {T<:Number} = djacobi!(x, n, a, zero(T), similar(x))
 
 
 eps1(::Type{T}) where {T<:AbstractFloat} = eps(T)
