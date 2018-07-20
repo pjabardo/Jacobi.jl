@@ -80,9 +80,9 @@ nm = length(m)
 for i = 1:na
     for k = 1:nm
         Q = m[k]
-        z = Jacobi.jacobi_zeros(Q, a[i], b[i])
+        z0 = Jacobi.jacobi_zeros(Q, a[i], b[i])
         for j = 1:Q
-            y = Jacobi.jacobi(z[j], Q, a[i], b[i])
+            y = Jacobi.jacobi(z0[j], Q, a[i], b[i])
             @test abs(y) < 500*eps(1.0)
         end
     end
@@ -202,9 +202,9 @@ pleg11 = Jacobi.poly_legendre(11)
 
 # Testing Chebyshev zeros:
 for k = 1:20
-    z  = Jacobi.chebyshev_zeros(k)
+    z0  = Jacobi.chebyshev_zeros(k)
     z1 = Jacobi.jacobi_zeros(k, -0.5, -0.5)
-    @test maximum(abs, z-z1) < 1e-13
+    @test maximum(abs, z0-z1) < 1e-13
 end
 
 
