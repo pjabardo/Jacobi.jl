@@ -170,23 +170,23 @@ y1 = zeros(xx)
 # Testing Chebyshev polynomials of the first kind
 Jacobi.chebyshev!(xx, 11, y1)
 y2 = polyval(t11, xx)
-@test maximum(abs, y1-y2) < 1e-12
+@test y1 ≈ y2
 
 # Testing Chebyshev polynomials of the second kind
 Jacobi.chebyshev2!(xx, 11, y1)
 y2 = polyval(u11, xx)
-@test maximum(abs, y1-y2) < 1e-12
+@test y1 ≈ y2
 
 
 # Testing Chebyshev polynomials of the first kind
 Jacobi.dchebyshev!(xx, 11, y1)
 y2 = polyval(dt11, xx)
-@test maximum(abs, y1-y2) < 1e-12
+@test y1 ≈ y2
 
 # Testing Chebyshev polynomials of the second kind
 Jacobi.dchebyshev2!(xx, 11, y1)
 y2 = polyval(du11, xx)
-@test maximum(abs, y1-y2) < 3e-12
+@test y1 ≈ y2
 
 
 # Testing legendre polynomials:
@@ -213,14 +213,14 @@ Jacobi.jacobi!(xx, 5, 0.8, 0.3, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.jacobi(xx[i], 5, 0.8, 0.3)
 end
-@test maximum(abs, y1-y2) < eps(Float64)
+@test y1 ≈ y2
 
 
 Jacobi.djacobi!(xx, 5, 0.8, 0.3, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.djacobi(xx[i], 5, 0.8, 0.3)
 end
-@test maximum(abs, y1-y2) < eps(Float64)
+@test y1 ≈ y2
 
 
 
@@ -228,41 +228,41 @@ Jacobi.legendre!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.legendre(xx[i], 5)
 end
-@test maximum(abs, y1-y2) < eps(Float64)
+@test y1 ≈ y2
 
 
 Jacobi.dlegendre!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.dlegendre(xx[i], 5)
 end
-@test maximum(abs, y1-y2) < eps(Float64)
+@test y1 ≈ y2
 
 
 Jacobi.chebyshev!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.chebyshev(xx[i], 5)
 end
-@test maximum(abs, y1-y2) < eps(Float64)
+@test y1 ≈ y2
 
 
 Jacobi.chebyshev2!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.chebyshev2(xx[i], 5)
 end
-@test maximum(abs, y1-y2) < eps(Float64)
+@test y1 ≈ y2
 
 Jacobi.dchebyshev!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.dchebyshev(xx[i], 5)
 end
-@test maximum(abs, y1-y2) < eps(Float64)
+@test y1 ≈ y2
 
 
 Jacobi.dchebyshev2!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.dchebyshev2(xx[i], 5)
 end
-@test maximum(abs, y1-y2) < eps(Float64)
+@test y1 ≈ y2
 
 
 
