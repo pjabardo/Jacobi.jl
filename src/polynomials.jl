@@ -7,7 +7,7 @@ Calculate Chebyshev polynomials coefficients
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-function poly_chebyshev{T<:Number}(n, ::Type{T}=Int, var=:x)
+function poly_chebyshev(n, ::Type{T}=Int, var=:x) where {T<:Number}
 
     if n==0
         return Poly{T}([one(T)], var)
@@ -35,7 +35,7 @@ Calculate derivative of Chebyshev polynomials coefficients
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-poly_dchebyshev{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(poly_chebyshev(n,T, var))
+poly_dchebyshev(n, ::Type{T}=Int, var=:x)  where {T<:Number} = polyder(poly_chebyshev(n,T, var))
 
 
 
@@ -45,7 +45,7 @@ Calculate the coefficients of Chebyshev polynomials of the second kind
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-function poly_chebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x)
+function poly_chebyshev2(n, ::Type{T}=Int, var=:x)  where {T<:Number}
 
     if n==0
         return Poly{T}([one(T)], var)
@@ -73,7 +73,7 @@ Calculate the coefficients of the derivative of Chebyshev polynomials of the sec
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-poly_dchebyshev2{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(poly_chebyshev2(n,T, var))
+poly_dchebyshev2(n, ::Type{T}=Int, var=:x) where {T<:Number} = polyder(poly_chebyshev2(n,T, var))
 
 
 """
@@ -82,7 +82,7 @@ Calculate the coefficients of Legendre polynomials
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-function poly_legendre{T<:Number}(n, ::Type{T}=Float64, var=:x)
+function poly_legendre(n, ::Type{T}=Float64, var=:x) where {T<:Number}
 
 
     if n==0
@@ -111,7 +111,7 @@ Calculate the coefficients of the derivativ of Legendre polynomials
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-poly_dlegendre{T<:Number}(n, ::Type{T}=Int, var=:x) = polyder(poly_legendre(n,T, var))
+poly_dlegendre(n, ::Type{T}=Int, var=:x) where {T<:Number} = polyder(poly_legendre(n,T, var))
 
 
 
@@ -123,7 +123,7 @@ Calculate the coefficients of Jacobi polynomials
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-function poly_jacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x)
+function poly_jacobi(n, a, b, ::Type{T}=Float64, var=:x) where {T<:Number}
 
     ox = one(T)
     zx = zero(T)
@@ -157,4 +157,4 @@ Calculate the coefficients of the derivative of Jacobi polynomials
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-poly_djacobi{T<:Number}(n, a, b, ::Type{T}=Float64, var=:x) = polyder(poly_jacobi(n,a,b,T,var))
+poly_djacobi(n, a, b, ::Type{T}=Float64, var=:x) where {T<:Number} = polyder(poly_jacobi(n,a,b,T,var))

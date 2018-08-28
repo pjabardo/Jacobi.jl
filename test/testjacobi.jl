@@ -1,8 +1,3 @@
-using Base.Test
-
-
-import Jacobi
-
 
 z = [0.05, 0.25, 0.50, 0.75, 0.95]
 
@@ -76,7 +71,7 @@ nm = length(m)
 for i = 1:na
     for k = 1:nm
         Q = m[k]
-        z = Jacobi.jacobi_zeros(Q, a[i], b[i])
+        local z = Jacobi.jacobi_zeros(Q, a[i], b[i])
         for j = 1:Q
             y = Jacobi.jacobi(z[j], Q, a[i], b[i])
             @test y ≈ 0 atol=500*eps(1.0)
@@ -144,9 +139,8 @@ end
 # Chebyshev polynomials
 # Coefficients from Abramowiz
 
-xx = linspace(-1.0, 1.0, 21)
+xx = range(-1.0, stop=1.0, length=21)
 
-using Polynomials
 
 t11 = Poly([0, -11, 0, 220, 0, -1232, 0, 2816, 0, -2816, 0, 1024])
 u11 = Poly([0, -12, 0, 280, 0, -1792, 0, 4608, 0, -5120, 0, 2048])
@@ -165,27 +159,26 @@ du11 = polyder(u11)
 @test du11 == pdu11
 
 
-y1 = zeros(xx)
 
 # Testing Chebyshev polynomials of the first kind
-Jacobi.chebyshev!(xx, 11, y1)
-y2 = polyval(t11, xx)
+y1 = Jacobi.chebyshev.(xx, 11)
+y2 = t11.(xx)
 @test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
 
 # Testing Chebyshev polynomials of the second kind
-Jacobi.chebyshev2!(xx, 11, y1)
-y2 = polyval(u11, xx)
+y1 = Jacobi.chebyshev2.(xx, 11)
+y2 = u11.(xx)
 @test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
 
 
 # Testing Chebyshev polynomials of the first kind
-Jacobi.dchebyshev!(xx, 11, y1)
-y2 = polyval(dt11, xx)
+y1 = Jacobi.dchebyshev.(xx, 11)
+y2 = dt11.(xx)
 @test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
 
 # Testing Chebyshev polynomials of the second kind
-Jacobi.dchebyshev2!(xx, 11, y1)
-y2 = polyval(du11, xx)
+y1 = Jacobi.dchebyshev2.(xx, 11)
+y2 = du11.(xx)
 @test maximum(abs,y1-y2) ≈ 0.0 atol=3e-12
 
 
@@ -198,69 +191,13 @@ pleg11 = Jacobi.poly_legendre(11)
 
 # Testing Chebyshev zeros:
 for k = 1:20
-    z  = Jacobi.chebyshev_zeros(k)
-    z1 = Jacobi.jacobi_zeros(k, -0.5, -0.5)
+    local z  = Jacobi.chebyshev_zeros(k)
+    local z1 = Jacobi.jacobi_zeros(k, -0.5, -0.5)
     @test maximum(abs,z-z1) ≈ 0.0 atol=1e-13
 end
 
 
-# Testing array function
-y1 = zeros(xx)
-y2 = zeros(xx)
-
-
-Jacobi.jacobi!(xx, 5, 0.8, 0.3, y1)
-for i in 1:length(xx)
-    y2[i] = Jacobi.jacobi(xx[i], 5, 0.8, 0.3)
-end
-@test maximum(abs,y1-y2) ≈ 0.0
-
-
-Jacobi.djacobi!(xx, 5, 0.8, 0.3, y1)
-for i in 1:length(xx)
-    y2[i] = Jacobi.djacobi(xx[i], 5, 0.8, 0.3)
-end
-@test maximum(abs,y1-y2) ≈ 0.0
 
 
 
-Jacobi.legendre!(xx, 5, y1)
-for i in 1:length(xx)
-    y2[i] = Jacobi.legendre(xx[i], 5)
-end
-@test maximum(abs,y1-y2) ≈ 0.0
-
-
-Jacobi.dlegendre!(xx, 5, y1)
-for i in 1:length(xx)
-    y2[i] = Jacobi.dlegendre(xx[i], 5)
-end
-@test maximum(abs,y1-y2) ≈ 0.0
-
-
-Jacobi.chebyshev!(xx, 5, y1)
-for i in 1:length(xx)
-    y2[i] = Jacobi.chebyshev(xx[i], 5)
-end
-@test maximum(abs,y1-y2) ≈ 0.0
-
-
-Jacobi.chebyshev2!(xx, 5, y1)
-for i in 1:length(xx)
-    y2[i] = Jacobi.chebyshev2(xx[i], 5)
-end
-@test maximum(abs,y1-y2) ≈ 0.0
-
-Jacobi.dchebyshev!(xx, 5, y1)
-for i in 1:length(xx)
-    y2[i] = Jacobi.dchebyshev(xx[i], 5)
-end
-@test maximum(abs,y1-y2) ≈ 0.0
-
-
-Jacobi.dchebyshev2!(xx, 5, y1)
-for i in 1:length(xx)
-    y2[i] = Jacobi.dchebyshev2(xx[i], 5)
-end
-@test maximum(abs,y1-y2) ≈ 0.0
 
