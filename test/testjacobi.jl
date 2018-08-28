@@ -18,14 +18,14 @@ np  = length(z)
 # Testing Legendre polynomials - source Abramowitz
 for i = 1:4
     for k = 1:np
-        @test_approx_eq_eps L[i,k] Jacobi.legendre(z[k], m[i]) 1e-7
+        @test L[i,k] ≈ Jacobi.legendre(z[k], m[i]) atol=1e-7
     end
 end
 
 # Testing Legendre polynomials comparing to Jacobi polynomials
 for i = 1:4
     for k = 1:np
-        @test_approx_eq_eps Jacobi.legendre(z[k], m[i]) Jacobi.jacobi(z[k], m[i], 0, 0) 10*eps(1.0)
+        @test Jacobi.legendre(z[k], m[i]) ≈ Jacobi.jacobi(z[k], m[i], 0, 0) atol=10*eps(1.0)
     end
 end
 
@@ -40,7 +40,7 @@ dL = [-1.48125 -1.03125 0.3750 2.71875 5.26875;
 # Testing derivatives of Legendre polynomials:
 for i = 1:4
     for k = 1:np
-        @test_approx_eq_eps dL[i,k] Jacobi.dlegendre(z[k], m2[i]) 1e-7
+        @test dL[i,k] ≈ Jacobi.dlegendre(z[k], m2[i]) atol=1e-7
     end
 end
 
@@ -56,7 +56,7 @@ b = 0.3
 for i = 1:4
     for k = 1:np
         d = calc_deriv(x->Jacobi.jacobi(x, m2[i], a, b), z[k], 1e-8)
-        @test_approx_eq_eps d Jacobi.djacobi(z[k], m2[i], a, b) 5e-7
+        @test d ≈ Jacobi.djacobi(z[k], m2[i], a, b) atol=5e-7
     end
 end
 
@@ -79,7 +79,7 @@ for i = 1:na
         z = Jacobi.jacobi_zeros(Q, a[i], b[i])
         for j = 1:Q
             y = Jacobi.jacobi(z[j], Q, a[i], b[i])
-            @test_approx_eq_eps y 0 500*eps(1.0)
+            @test y ≈ 0 atol=500*eps(1.0)
         end
     end
 end
@@ -91,7 +91,7 @@ for i = 1:na
         zb = Jacobi.jacobi_zeros(Q, a[i], b[i], BigFloat)
         for j = 1:Q
             yb = Jacobi.jacobi(zb[j], Q, a[i], b[i])
-            @test_approx_eq_eps yb BigFloat(0) 500*eps(BigFloat(1))
+            @test yb ≈ BigFloat(0) atol=500*eps(BigFloat(1))
         end
     end
 end
@@ -170,29 +170,29 @@ y1 = zeros(xx)
 # Testing Chebyshev polynomials of the first kind
 Jacobi.chebyshev!(xx, 11, y1)
 y2 = polyval(t11, xx)
-@test_approx_eq_eps maxabs(y1-y2) 0.0 1e-12
+@test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
 
 # Testing Chebyshev polynomials of the second kind
 Jacobi.chebyshev2!(xx, 11, y1)
 y2 = polyval(u11, xx)
-@test_approx_eq_eps maxabs(y1-y2) 0.0 1e-12
+@test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
 
 
 # Testing Chebyshev polynomials of the first kind
 Jacobi.dchebyshev!(xx, 11, y1)
 y2 = polyval(dt11, xx)
-@test_approx_eq_eps maxabs(y1-y2) 0.0 1e-12
+@test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
 
 # Testing Chebyshev polynomials of the second kind
 Jacobi.dchebyshev2!(xx, 11, y1)
 y2 = polyval(du11, xx)
-@test_approx_eq_eps maxabs(y1-y2) 0.0 3e-12
+@test maximum(abs,y1-y2) ≈ 0.0 atol=3e-12
 
 
 # Testing legendre polynomials:
 leg11 = Poly([0, -693, 0, 15015, 0, -90090, 0, 218790, 0, -230945, 0, 88179])/256
 pleg11 = Jacobi.poly_legendre(11)
-@test_approx_eq_eps maxabs(leg11.a[1:12] - pleg11.a[1:12]) 0.0 200*eps(500.0)
+@test maximum(abs,leg11.a[1:12] - pleg11.a[1:12]) ≈ 0.0 atol=200*eps(500.0)
 
 
 
@@ -200,7 +200,7 @@ pleg11 = Jacobi.poly_legendre(11)
 for k = 1:20
     z  = Jacobi.chebyshev_zeros(k)
     z1 = Jacobi.jacobi_zeros(k, -0.5, -0.5)
-    @test_approx_eq_eps maxabs(z-z1) 0.0 1e-13
+    @test maximum(abs,z-z1) ≈ 0.0 atol=1e-13
 end
 
 
@@ -213,14 +213,14 @@ Jacobi.jacobi!(xx, 5, 0.8, 0.3, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.jacobi(xx[i], 5, 0.8, 0.3)
 end
-@test_approx_eq maxabs(y1-y2) 0.0
+@test maximum(abs,y1-y2) ≈ 0.0
 
 
 Jacobi.djacobi!(xx, 5, 0.8, 0.3, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.djacobi(xx[i], 5, 0.8, 0.3)
 end
-@test_approx_eq maxabs(y1-y2) 0.0
+@test maximum(abs,y1-y2) ≈ 0.0
 
 
 
@@ -228,44 +228,39 @@ Jacobi.legendre!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.legendre(xx[i], 5)
 end
-@test_approx_eq maxabs(y1-y2) 0.0
+@test maximum(abs,y1-y2) ≈ 0.0
 
 
 Jacobi.dlegendre!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.dlegendre(xx[i], 5)
 end
-@test_approx_eq maxabs(y1-y2) 0.0
+@test maximum(abs,y1-y2) ≈ 0.0
 
 
 Jacobi.chebyshev!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.chebyshev(xx[i], 5)
 end
-@test_approx_eq maxabs(y1-y2) 0.0
+@test maximum(abs,y1-y2) ≈ 0.0
 
 
 Jacobi.chebyshev2!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.chebyshev2(xx[i], 5)
 end
-@test_approx_eq maxabs(y1-y2) 0.0
+@test maximum(abs,y1-y2) ≈ 0.0
 
 Jacobi.dchebyshev!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.dchebyshev(xx[i], 5)
 end
-@test_approx_eq maxabs(y1-y2) 0.0
+@test maximum(abs,y1-y2) ≈ 0.0
 
 
 Jacobi.dchebyshev2!(xx, 5, y1)
 for i in 1:length(xx)
     y2[i] = Jacobi.dchebyshev2(xx[i], 5)
 end
-@test_approx_eq maxabs(y1-y2) 0.0
+@test maximum(abs,y1-y2) ≈ 0.0
 
-
-
-
-
-true
