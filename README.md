@@ -1,5 +1,7 @@
 # Jacobi
 
+[![Build Status](https://travis-ci.org/pjabardo/Jacobi.jl.png)](https://travis-ci.org/pjabardo/Jacobi.jl)
+
 A library that implements Jacobi polynomials and Gauss 
 quadrature related operations.
 
@@ -146,8 +148,3 @@ This package was implemented using both references below.
 
  * Spectral/hp Element Methods for CFD, 2nd edition, Karniadakis and Sherwin, 2005.
  * NIST Handbook of Mathematical Functions (http://dlmf.nist.gov/18)
-
-
-
-
-[![Build Status](https://travis-ci.org/pjabardo/Jacobi.jl.png)](https://travis-ci.org/pjabardo/Jacobi.jl)
