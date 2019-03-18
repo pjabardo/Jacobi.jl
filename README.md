@@ -108,7 +108,7 @@ using PyPlot
 Q = 5
 z = zglj(Q)
 nx = 201
-x = linspace(-1, 1, nx)
+x = -1.0:0.01:1.0
 y = zeros(nx, Q)
 for k = 1:Q, i=1:nx
   y[i,k] = lagrange(k, x[i], z)
@@ -129,7 +129,7 @@ using PyPlot
 Q = 5
 z = zglj(Q)
 nx = 201
-x = linspace(-1, 1, nx)
+x = -1.0:0.01:1.0
 ye = sin(pi*z)
 ye2 = sin(pi*x)
 Im = interp_mat(x, z)
