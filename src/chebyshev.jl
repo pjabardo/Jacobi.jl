@@ -4,12 +4,8 @@ Compute the `n-th` degree Chebyshev polynomial of first and second kind and its 
 
  * `chebyshev(x, n)` Chebyshev polynomial of the first kind
  * `chebyshev2(x, n)` Chebyshev polynomial of the second kind
- * `chebyshev!(x, n, y)` Modifying form for Chebyshev polynomial of the first kind
- * `chebyshev2!(x, n, y)` Modifying form for Chebyshev polynomial of the second kind
  * `dchebyshev(x, n)` Derivative of Chebyshev polynomial of the first kind
  * `dchebyshev2(x, n)` Derivative of Chebyshev polynomial of the second kind
- * `dchebyshev!(x, n, y)` Modifying form of Derivative of Chebyshev polynomial of the first kind
- * `dchebyshev2!(x, n, y)` Modifying form of Derivative of Chebyshev polynomial of the second kind
 
 There are also functions that compute the zeros of Chebyshev polynomials:
 
@@ -40,7 +36,6 @@ function chebyshev(x, n)
 end
 
 
-
 function chebyshev2(x, n)
 
     if n==0
@@ -64,9 +59,8 @@ function chebyshev2(x, n)
 end
 
 
-
-
 dchebyshev(x, n) = n * chebyshev2(x, n-1)
+
 
 
 function dchebyshev2(x, n)
@@ -96,15 +90,6 @@ function dchebyshev2(x, n)
 end
 
 
-function dchebyshev2!(x::AbstractArray{T}, n, y::AbstractArray{T}) where {T<:Number}
-
-    m = length(x)
-    for i = 1:m
-        y[i] = dchebyshev2(x[i], n)
-    end
-    return y
-end
-
 
 
 function chebyshev_zeros!(n, x::AbstractArray{T}) where {T<:Number}
@@ -132,7 +117,7 @@ function chebyshev2_zeros!(n, x::AbstractArray{T}) where {T<:Number}
     return x
 
 end
-chebyshev2_zeros(n, ::Type{T}=Float64)  where {T<:Number}= chebyshev2_zeros!(n, zeros(T, n))
+chebyshev2_zeros(n, ::Type{T}=Float64) where {T<:Number} = chebyshev2_zeros!(n, zeros(T, n))
 
 @doc (@doc chebyshev) chebyshev2
 

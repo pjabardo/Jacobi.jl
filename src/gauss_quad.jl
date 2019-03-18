@@ -7,15 +7,6 @@ struct GLJ <: QUADRATURE_TYPE end
 struct GRJM <: QUADRATURE_TYPE end
 struct GRJP <: QUADRATURE_TYPE end
 
-# Calculate a ratio of Gamma functions without overflow
-function gamma_ratio{T<:Number}(num::T, denom::T)
-    if num>1 && denom>1
-        exp(lgamma(num) - lgamma(denom))
-    else
-        gamma(num) / gamma(denom)
-    end
-end
-
 """
 Gauss-type quadrature
 
@@ -23,9 +14,9 @@ Numerical integrals in the domain [-1,1] can be computed
 from knowledge of the function in a set of nodes and the
 corresponding nodes, such that
 
-\$\$
+```math
 \\int_{-1}^1 (1-x)^a (1+x)^b (1-xf(x)\\:dx \\approx \\sum_{i=1}^N w^{a,b}_i f(x_i)
-\$\$
+```
 
 The parameters `a` and `b` form a famility of quadrature rules. But if one or both
 of the ends are specified, other quadrature families are possible:
@@ -310,7 +301,7 @@ Abstract interface of Gauss-type quadrature rules
 
 Can be used for any `AbstractFloat` type data.
 """
-struct  Quadrature{T<:Number,QT<:QUADRATURE_TYPE}
+struct Quadrature{T<:Number,QT<:QUADRATURE_TYPE}
     "Number of quadrature nodes"
     Q::Int
     "a weight"
@@ -336,8 +327,8 @@ qzeros(::Type{GRJP}, Q, a=0, b=0, ::Type{T}=Float64) where {T<:Number} = zgrjp(Q
 """
 Return the weights of a Gauss type quadrature
 """
-qweights(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wgj(z, a, b) 
-qweights(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wglj(z, a, b) 
+qweights(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wgj(z, a, b)
+qweights(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wglj(z, a, b)
 qweights(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wgrjm(z, a, b)
 qweights(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wgrjp(z, a, b)
 
@@ -345,7 +336,7 @@ qweights(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = wgrjp(
 Return the derivative matrix of a Gauss type quadrature
 """
 qdiff(::Type{GJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dgj(z, a, b)
-qdiff(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dglj(z, a, b) 
+qdiff(::Type{GLJ}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dglj(z, a, b)
 qdiff(::Type{GRJM}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dgrjm(z, a, b)
 qdiff(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dgrjp(z, a, b)
 
@@ -353,7 +344,8 @@ qdiff(::Type{GRJP}, z::AbstractArray{T}, a=0, b=0) where {T<:Number} = dgrjp(z, 
 """
 Create a `Quadrature` object given its type, order and weights.
 """
-function Quadrature(::Type{QT}, Q, a=0, b=0, ::Type{T}=Float64) where {T<:Number, QT<:QUADRATURE_TYPE}
+function Quadrature(::Type{QT}, Q, a=0, b=0,
+                    ::Type{T}=Float64) where {T<:Number, QT<:QUADRATURE_TYPE}
     aa = convert(T, a)
     bb = convert(T, b)
     z = qzeros(QT, Q, aa, bb, T)
@@ -363,7 +355,7 @@ function Quadrature(::Type{QT}, Q, a=0, b=0, ::Type{T}=Float64) where {T<:Number
 end
 
 "Return quadrature type"
-qtype(q::Quadrature{T,QT}) where {T,QT} = QT 
+qtype(q::Quadrature{T,QT}) where {T,QT} = QT
 "Return quadrature nodes"
 qzeros(q::QT) where {QT<:Quadrature} = q.z
 "Return quadrature weights"
@@ -375,7 +367,7 @@ num_points(q::QT) where {QT<:Quadrature} = q.Q
 "Return quadrature `a` weight"
 qalpha(q::QT) where {QT<:Quadrature} = q.a
 "Return quadrature `b` weight"
-qbeta(q::QT) where {QT<:Quadrature}= q.b
+qbeta(q::QT) where {QT<:Quadrature} = q.b
 
 """
 Compute the Lagrange polynomial

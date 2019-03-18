@@ -64,15 +64,14 @@ end
 jacobi(x, n) = jacobi(x, n, zero(x), zero(x))
 jacobi(x, n, a) = jacobi(x, n, a, zero(x))
 
-
 djacobi(x, n, a, b) =  one(x)/2 * (a + b + n + 1) * jacobi(x, n-1, a+1, b+1)
 
 djacobi(x, n) = djacobi(x, n, zero(x), zero(x))
 djacobi(x, n, a) = djacobi(x, n, a, zero(x))
 
 
-eps1(::Type{T}) where {T<:AbstractFloat}= eps(T)
-eps1(::Type{Complex{T}}) where {T<:AbstractFloat}= eps(T)
+eps1(::Type{T}) where {T<:AbstractFloat} = eps(T)
+eps1(::Type{Complex{T}}) where {T<:AbstractFloat} = eps(T)
 
 """
 Compute the zeros of Jacobi polynomials

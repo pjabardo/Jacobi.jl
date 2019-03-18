@@ -1,4 +1,11 @@
 ### Testing quadrature related function
+using Jacobi
+using Polynomials
+@static if VERSION > v"0.7-"
+    using Test
+else
+    using Base.Test
+end
 
 Nmax = 200
 a = rand(1:6, Nmax)  # Coefficient for a ninth degree polynomial
@@ -11,7 +18,7 @@ X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
 q = Quadrature(GJ, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test abs(Xg-X) ≈ 0.0 atol=200*eps(Xg)
+@test Xg ≈ X
 
 # I'm not getting the precision I need for BigFloats. Should investigate further
 #X = polyval(p1_int, BigFloat(1.0)) - polyval(p1_int, BigInt(-1.0))
@@ -28,7 +35,7 @@ X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
 q = Quadrature(GJ, Q, 1.0, 2.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test abs(Xg-X) ≈ 0.0 atol=200*eps(Xg)
+@test Xg ≈ X
 
 # Test Gauss-Radau:
 # GRJM
@@ -40,13 +47,13 @@ X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
 q = Quadrature(GRJM, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test abs(Xg-X) ≈ 0.0 atol=200*eps(Xg)
+@test Xg ≈ X
 
 # GRJP
 q = Quadrature(GRJP, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test abs(Xg-X) ≈ 0.0 atol=200*eps(Xg)
+@test Xg ≈ X
 
 
 # Weights a=1, b=2 GRJM
@@ -56,7 +63,7 @@ X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
 q = Quadrature(GRJM, Q, 1.0, 2.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test abs(Xg-X) ≈ 0.0 atol=200*eps(Xg)
+@test Xg ≈ X
 
 
 # Weights a=1, b=2 GRJP
@@ -66,7 +73,7 @@ X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
 q = Quadrature(GRJP, Q, 1.0, 2.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test abs(Xg-X) ≈ 0.0 atol=200*eps(Xg)
+@test Xg ≈ X
 
 
 
@@ -81,7 +88,8 @@ X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
 q = Quadrature(GLJ, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test abs(Xg-X) ≈ 0.0 atol=200*eps(Xg)
+@test Xg ≈ X
+>>>>>>> f90cb8f753ad8e97dd48b607ca8d103c7087cb8d
 
 # Weights a=1, b=2 GLJ
 p2 = p * Poly([1, -1]) * Poly([1, 1])^2
@@ -90,7 +98,7 @@ X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
 q = Quadrature(GRJM, Q, 1.0, 2.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
-@test abs(Xg-X) ≈ 0.0 atol=200*eps(Xg)
+@test Xg ≈ X
 
 
 # Testing derivatives:
@@ -104,7 +112,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
+@test dy ≈ dyg
 
 
 # GRJM
@@ -117,7 +125,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
+@test dy ≈ dyg
 
 
 
@@ -131,7 +139,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
+@test dy ≈ dyg
 
 
 # GLJ
@@ -144,7 +152,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
+@test dy ≈ dyg
 
 
 
@@ -162,7 +170,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
+@test dy ≈ dyg
 
 
 # GRJM
@@ -175,7 +183,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
+@test dy ≈ dyg
 
 
 # GRJP
@@ -188,7 +196,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
+@test dy ≈ dyg
 
 
 # GLJ
@@ -201,7 +209,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
+@test dy ≈ dyg
 
 Q = 200
 N = 200
@@ -212,7 +220,7 @@ z = qzeros(q)
 y = polyval(p, z)
 dy = polyval(dp, z)
 dyg = qdiff(q) * y
-@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000000*eps(maxabs(dy))
+@test dy ≈ dyg
 
 
 # Test interpolation:
@@ -221,12 +229,11 @@ dyg = qdiff(q) * y
 N = 10
 Q = 10
 p = Poly(a[1:N])
-x = Compat.range(-1, stop=1, length=101)
+x = -1.0:0.02:1.0
 ue = polyval(p, x)
 q = Quadrature(GLJ, Q, 1.0, 0.5)
 z = qzeros(q)
 u = polyval(p, z)
 I = interp_mat(x, z)
 ui = I * u
-@test maximum(abs,ui-ue) ≈ 0.0 atol=200*eps(maximum(abs,u))
-
+@test ui ≈ ue

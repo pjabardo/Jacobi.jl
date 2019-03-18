@@ -1,3 +1,12 @@
+@static if VERSION > v"0.7-"
+    using Test
+else
+    using Base.Test
+end
+
+
+import Jacobi
+
 
 z = [0.05, 0.25, 0.50, 0.75, 0.95]
 
@@ -71,10 +80,10 @@ nm = length(m)
 for i = 1:na
     for k = 1:nm
         Q = m[k]
-        local z = Jacobi.jacobi_zeros(Q, a[i], b[i])
+        z0 = Jacobi.jacobi_zeros(Q, a[i], b[i])
         for j = 1:Q
-            y = Jacobi.jacobi(z[j], Q, a[i], b[i])
-            @test y ≈ 0 atol=500*eps(1.0)
+            y = Jacobi.jacobi(z0[j], Q, a[i], b[i])
+            @test abs(y) < 500*eps(1.0)
         end
     end
 end
@@ -103,7 +112,7 @@ function peval(x, p)
     return y
 end
 function peval(x::AbstractArray, p)
-    y = zeros(x)
+    y = similar(x)
     for i = 1:length(x)
         y[i] = peval(x[i], p)
     end
@@ -139,7 +148,7 @@ end
 # Chebyshev polynomials
 # Coefficients from Abramowiz
 
-xx = Compat.range(-1.0, stop=1.0, length=21)
+xx = -1.0:0.1:1.0
 
 
 t11 = Poly([0, -11, 0, 220, 0, -1232, 0, 2816, 0, -2816, 0, 1024])
@@ -158,42 +167,39 @@ du11 = polyder(u11)
 @test dt11 == pdt11
 @test du11 == pdu11
 
-
-
 # Testing Chebyshev polynomials of the first kind
 y1 = Jacobi.chebyshev.(xx, 11)
 y2 = t11.(xx)
-@test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
+@test y1 ≈ y2 
 
 # Testing Chebyshev polynomials of the second kind
 y1 = Jacobi.chebyshev2.(xx, 11)
 y2 = u11.(xx)
-@test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
+@test y1 ≈ y2
 
 
 # Testing Chebyshev polynomials of the first kind
 y1 = Jacobi.dchebyshev.(xx, 11)
 y2 = dt11.(xx)
-@test maximum(abs,y1-y2) ≈ 0.0 atol=1e-12
+@test y1 ≈ y2
 
 # Testing Chebyshev polynomials of the second kind
 y1 = Jacobi.dchebyshev2.(xx, 11)
 y2 = du11.(xx)
-@test maximum(abs,y1-y2) ≈ 0.0 atol=3e-12
-
+@test y1 ≈ y2
 
 # Testing legendre polynomials:
 leg11 = Poly([0, -693, 0, 15015, 0, -90090, 0, 218790, 0, -230945, 0, 88179])/256
 pleg11 = Jacobi.poly_legendre(11)
-@test maximum(abs,leg11.a[1:12] - pleg11.a[1:12]) ≈ 0.0 atol=200*eps(500.0)
+@test maximum(abs, leg11.a[1:12] - pleg11.a[1:12]) < 200*eps(500.0)
 
 
 
 # Testing Chebyshev zeros:
 for k = 1:20
-    local z  = Jacobi.chebyshev_zeros(k)
-    local z1 = Jacobi.jacobi_zeros(k, -0.5, -0.5)
-    @test maximum(abs,z-z1) ≈ 0.0 atol=1e-13
+    z0  = Jacobi.chebyshev_zeros(k)
+    z1 = Jacobi.jacobi_zeros(k, -0.5, -0.5)
+    @test maximum(abs, z0-z1) < 1e-13
 end
 
 

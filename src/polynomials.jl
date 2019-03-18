@@ -35,7 +35,7 @@ Calculate derivative of Chebyshev polynomials coefficients
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-poly_dchebyshev(n, ::Type{T}=Int, var=:x)  where {T<:Number} = polyder(poly_chebyshev(n,T, var))
+poly_dchebyshev(n, ::Type{T}=Int, var=:x) where {T<:Number} = polyder(poly_chebyshev(n,T, var))
 
 
 
@@ -45,7 +45,7 @@ Calculate the coefficients of Chebyshev polynomials of the second kind
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
 """
-function poly_chebyshev2(n, ::Type{T}=Int, var=:x)  where {T<:Number}
+function poly_chebyshev2(n, ::Type{T}=Int, var=:x) where {T<:Number}
 
     if n==0
         return Poly{T}([one(T)], var)
