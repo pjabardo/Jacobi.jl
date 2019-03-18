@@ -7,6 +7,15 @@ struct GLJ <: QUADRATURE_TYPE end
 struct GRJM <: QUADRATURE_TYPE end
 struct GRJP <: QUADRATURE_TYPE end
 
+# Calculate a ratio of Gamma functions without overflow
+function gamma_ratio{T<:Number}(num::T, denom::T)
+    if num>1 && denom>1
+        exp(lgamma(num) - lgamma(denom))
+    else
+        gamma(num) / gamma(denom)
+    end
+end
+
 """
 Gauss-type quadrature
 
@@ -101,7 +110,7 @@ function wgj(z::AbstractArray{T}, alpha=0, beta=0) where {T<:Number}
 
     Q::Int = length(z)
     o = one(T)
-    coef = 2^(a+b+1) * ( gamma(a+Q+1) / gamma(Q+o) ) * (gamma(b+Q+1) / gamma(a+b+Q+1))
+    coef = 2^(a+b+1) * gamma_ratio(a+Q+1, Q+o) * gamma_ratio(b+Q+1, a+b+Q+1)
     w = [djacobi(zz, Q, a, b) for zz=z]
 
     for i = 1:Q
@@ -120,8 +129,8 @@ function wglj(z::AbstractArray{T}, alpha=0, beta=0) where {T<:Number}
     o = one(T)
     Q = length(z)
 
-    coef = 2^(a+b+1) / (Q-o) * (gamma(a+Q) / gamma(Q*o)) * (gamma(b+Q) / gamma(a+b+Q+1))
-
+    coef = 2^(a+b+1) / (Q-o) * gamma_ratio(a+Q, Q*o) * gamma_ratio(b+Q, a+b+Q+1)
+    
     w = [jacobi(zz, Q-1, a, b) for zz=z]
     w[1] = (b+1) * coef / (w[1]*w[1])
     w[Q] = (a+1) * coef / (w[Q]*w[Q])
@@ -141,7 +150,7 @@ function wgrjm(z::AbstractArray{T}, alpha=0, beta=0) where {T<:Number}
 
     Q = length(z)
 
-    coef = 2^(a+b) / (b+Q) * (gamma(a+Q) / gamma(Q*o)) * (gamma(b+Q) / gamma(a+b+Q+1))
+    coef = 2^(a+b) / (b+Q) * gamma_ratio(a+Q, Q*o) * gamma_ratio(b+Q, a+b+Q+1)
 
     w = [jacobi(zz, Q-1, a, b) for zz=z]
 
@@ -162,7 +171,7 @@ function wgrjp(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
     Q = length(z)
     o = one(T)
 
-    coef = 2^(a+b) / (a+Q) * (gamma(a+Q) / gamma(Q*o)) * (gamma(b+Q) / gamma(a+b+Q+1))
+    coef = 2^(a+b) / (a+Q) * gamma_ratio(a+Q, Q*o) * gamma_ratio(b+Q, a+b+Q+1)
 
     w = [jacobi(zz, Q-1, a, b) for zz=z]
 
@@ -209,8 +218,8 @@ function dglj(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
     o = one(T)
 
     djac = zeros(T,Q)
-    djac[1] = (-1)^Q * 2  *  gamma(Q + b) / (gamma(Q-o) * gamma(b+2))
-    djac[Q] = -2*gamma(Q+a) / (gamma(Q-o)*gamma(a+2))
+    djac[1] = (-1)^Q * 2 * gamma_ratio(Q+b, Q-o) / gamma(b+2)
+    djac[Q] = -2 * gamma_ratio(Q+a, Q-o) / gamma(a+2)
     for i = 2:(Q-1)
         djac[i] = (o-z[i]*z[i]) * djacobi(z[i], Q-2, a+1, b+1)
     end
@@ -245,7 +254,7 @@ function dgrjm(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
     for i = 2:Q
         djac[i] = (1+z[i]) * djacobi(z[i], Q-1, a, b+1)
     end
-    djac[1] = (-1)^(Q-1) *  gamma(Q + b + 1) / (gamma(Q*o) * gamma(b+2))
+    djac[1] = (-1)^(Q-1) * gamma_ratio(Q+b+1, Q*o) / gamma(b+2)
 
     D = zeros(T, Q, Q)
     for i = 1:Q
@@ -276,7 +285,7 @@ function dgrjp(z::AbstractArray{T,1}, alpha=0, beta=0) where {T<:Number}
     for i = 1:(Q-1)
         djac[i] = (1-z[i]) * djacobi(z[i], Q-1, a+1, b)
     end
-    djac[Q] = - gamma(Q + a + 1) / (gamma(Q*o) * gamma(a+2))
+    djac[Q] = - gamma_ratio(Q+a+1, Q*o) / gamma(a+2)
 
     D = zeros(T, Q, Q)
     for i = 1:Q

@@ -1,6 +1,6 @@
 ### Testing quadrature related function
 
-Nmax= 20
+Nmax = 200
 a = rand(1:6, Nmax)  # Coefficient for a ninth degree polynomial
 
 N = 10
@@ -178,7 +178,6 @@ dyg = qdiff(q) * y
 @test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
 
 
-
 # GRJP
 Q = 10
 N = 10
@@ -204,6 +203,16 @@ dy = polyval(dp, z)
 dyg = qdiff(q) * y
 @test maximum(abs,dy-dyg) ≈ 0.0 atol=1000*eps(maximum(abs,dy))
 
+Q = 200
+N = 200
+p = Poly(a[1:N])
+dp = polyder(p)
+q = Quadrature(GLJ, Q, a1, b1)
+z = qzeros(q)
+y = polyval(p, z)
+dy = polyval(dp, z)
+dyg = qdiff(q) * y
+@test_approx_eq_eps maxabs(dy-dyg) 0.0 1000000*eps(maxabs(dy))
 
 
 # Test interpolation:
