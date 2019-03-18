@@ -212,7 +212,7 @@ dyg = qdiff(q) * y
 N = 10
 Q = 10
 p = Poly(a[1:N])
-x = range(-1, stop=1, length=101)
+x = Compat.range(-1, stop=1, length=101)
 ue = polyval(p, x)
 q = Quadrature(GLJ, Q, 1.0, 0.5)
 z = qzeros(q)
@@ -220,5 +220,4 @@ u = polyval(p, z)
 I = interp_mat(x, z)
 ui = I * u
 @test maximum(abs,ui-ue) ≈ 0.0 atol=200*eps(maximum(abs,u))
-
 

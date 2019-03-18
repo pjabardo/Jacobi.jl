@@ -139,7 +139,7 @@ end
 # Chebyshev polynomials
 # Coefficients from Abramowiz
 
-xx = range(-1.0, stop=1.0, length=21)
+xx = Compat.range(-1.0, stop=1.0, length=21)
 
 
 t11 = Poly([0, -11, 0, 220, 0, -1232, 0, 2816, 0, -2816, 0, 1024])
