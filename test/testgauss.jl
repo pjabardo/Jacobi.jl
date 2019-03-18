@@ -89,7 +89,6 @@ q = Quadrature(GLJ, Q, 0.0, 0.0, Float64)
 y = polyval(p, qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
->>>>>>> f90cb8f753ad8e97dd48b607ca8d103c7087cb8d
 
 # Weights a=1, b=2 GLJ
 p2 = p * Poly([1, -1]) * Poly([1, 1])^2
