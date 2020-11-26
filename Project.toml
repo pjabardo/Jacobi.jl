@@ -1,7 +1,7 @@
 name = "Jacobi"
 uuid = "83f21c0b-4282-5fbc-9e3f-f6da3d2e584c"
 authors = ["Paulo José Saiz Jabardo <pjabardo@gmail.com> and contributors"]
-version = "0.3.4"
+version = "0.5.0"
 
 [compat]
 julia = "≥ 1.0.0"
