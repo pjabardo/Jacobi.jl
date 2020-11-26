@@ -10,13 +10,13 @@ use `Polynomials` package to compute the actual polynomial
 function poly_chebyshev(n, ::Type{T}=Int, var=:x) where {T<:Number}
 
     if n==0
-        return Poly{T}([one(T)], var)
+        return Polynomial{T}([one(T)], var)
     elseif n==1
-        return Poly{T}([zero(T), one(T)], var) 
+        return Polynomial{T}([zero(T), one(T)], var) 
     end
 
-    px = Poly{T}([zero(T), one(T)], var)
-    T0 = Poly{T}([one(T)], var)
+    px = Polynomial{T}([zero(T), one(T)], var)
+    T0 = Polynomial{T}([one(T)], var)
     T1 = px
     
     for i = 2:n
@@ -48,14 +48,14 @@ use `Polynomials` package to compute the actual polynomial
 function poly_chebyshev2(n, ::Type{T}=Int, var=:x) where {T<:Number}
 
     if n==0
-        return Poly{T}([one(T)], var)
+        return Polynomial{T}([one(T)], var)
     elseif n==1
-        return Poly{T}([zero(T), 2*one(T)], var) 
+        return Polynomial{T}([zero(T), 2*one(T)], var) 
     end
 
-    px = Poly{T}([zero(T), one(T)], var)
-    U0 = Poly{T}([one(T)], var)
-    U1 = Poly{T}([zero(T), 2*one(T)], var)
+    px = Polynomial{T}([zero(T), one(T)], var)
+    U0 = Polynomial{T}([one(T)], var)
+    U1 = Polynomial{T}([zero(T), 2*one(T)], var)
     
     for i = 2:n
         U2 = 2*px*U1 - U0
@@ -86,13 +86,13 @@ function poly_legendre(n, ::Type{T}=Float64, var=:x) where {T<:Number}
 
 
     if n==0
-        return Poly{T}([one(T)], var)
+        return Polynomial{T}([one(T)], var)
     elseif n==1
-        return Poly{T}([zero(T), one(T)], var) 
+        return Polynomial{T}([zero(T), one(T)], var) 
     end
 
-    px = Poly{T}([zero(T), one(T)], var)
-    p0 = Poly{T}([one(T)], var)
+    px = Polynomial{T}([zero(T), one(T)], var)
+    p0 = Polynomial{T}([one(T)], var)
     p1 = px
 
     for i = 2:n
@@ -128,13 +128,13 @@ function poly_jacobi(n, a, b, ::Type{T}=Float64, var=:x) where {T<:Number}
     ox = one(T)
     zx = zero(T)
     if n==0
-        return Poly{T}([one(T)], var)
+        return Polynomial{T}([one(T)], var)
     elseif n==1
-        return Poly{T}([(a-b)/2, (a+b+2)/2], var)
+        return Polynomial{T}([(a-b)/2, (a+b+2)/2], var)
     end
-    p0 = Poly{T}([one(T)], var)
-    p1 = Poly{T}([(a-b)/2, (a+b+2)/2], var)
-    px = Poly{T}([zero(T), one(T)], var)
+    p0 = Polynomial{T}([one(T)], var)
+    p1 = Polynomial{T}([(a-b)/2, (a+b+2)/2], var)
+    px = Polynomial{T}([zero(T), one(T)], var)
     
     for i = 1:(n-1)
 	a1 = 2*(i+1)*(i+a+b+1)*(2*i+a+b);
