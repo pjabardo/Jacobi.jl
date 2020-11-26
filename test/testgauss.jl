@@ -9,11 +9,11 @@ a = rand(1:6, Nmax)  # Coefficient for a ninth degree polynomial
 
 N = 10
 Q = 5
-p = Poly(a[1:N])
-p_int = polyint(p)
-X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
+p = Polynomial(a[1:N])
+p_int = integrate(p)
+X = p_int(1.0) - p_int(-1.0)
 q = Quadrature(GJ, Q, 0.0, 0.0, Float64)
-y = polyval(p, qzeros(q))
+y = p.(qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
 
@@ -26,11 +26,11 @@ Xg = sum(qweights(q) .* y)
 
 
 # Weights a=1, b=2
-p2 = p * Poly([1, -1]) * Poly([1, 1])^2
-p2_int = polyint(p2)
-X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
+p2 = p * Polynomial([1, -1]) * Polynomial([1, 1])^2
+p2_int = integrate(p2)
+X = p2_int(1.0) - p2_int(-1.0)
 q = Quadrature(GJ, Q, 1.0, 2.0, Float64)
-y = polyval(p, qzeros(q))
+y = p.(qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
 
@@ -38,37 +38,37 @@ Xg = sum(qweights(q) .* y)
 # GRJM
 N = 9
 Q = 5
-p = Poly(a[1:N])
-p_int = polyint(p)
-X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
+p = Polynomial(a[1:N])
+p_int = integrate(p)
+X = p_int(1.0) - p_int(-1.0)
 q = Quadrature(GRJM, Q, 0.0, 0.0, Float64)
-y = polyval(p, qzeros(q))
+y = p.(qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
 
 # GRJP
 q = Quadrature(GRJP, Q, 0.0, 0.0, Float64)
-y = polyval(p, qzeros(q))
+y = p.(qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
 
 
 # Weights a=1, b=2 GRJM
-p2 = p * Poly([1, -1]) * Poly([1, 1])^2
-p2_int = polyint(p2)
-X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
+p2 = p * Polynomial([1, -1]) * Polynomial([1, 1])^2
+p2_int = integrate(p2)
+X = p2_int(1.0) - p2_int(-1.0)
 q = Quadrature(GRJM, Q, 1.0, 2.0, Float64)
-y = polyval(p, qzeros(q))
+y = p.(qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
 
 
 # Weights a=1, b=2 GRJP
-p2 = p * Poly([1, -1]) * Poly([1, 1])^2
-p2_int = polyint(p2)
-X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
+p2 = p * Polynomial([1, -1]) * Polynomial([1, 1])^2
+p2_int = integrate(p2)
+X = p2_int(1.0) - p2_int(-1.0)
 q = Quadrature(GRJP, Q, 1.0, 2.0, Float64)
-y = polyval(p, qzeros(q))
+y = p.(qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
 
@@ -79,20 +79,20 @@ Xg = sum(qweights(q) .* y)
 # Test Gauss-Lobatto
 N = 8
 Q = 5
-p = Poly(a[1:N])
-p_int = polyint(p)
-X = polyval(p_int, 1.0) - polyval(p_int, -1.0)
+p = Polynomial(a[1:N])
+p_int = integrate(p)
+X = p_int(1.0) - p_int(-1.0)
 q = Quadrature(GLJ, Q, 0.0, 0.0, Float64)
-y = polyval(p, qzeros(q))
+y = p.(qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
 
 # Weights a=1, b=2 GLJ
-p2 = p * Poly([1, -1]) * Poly([1, 1])^2
-p2_int = polyint(p2)
-X = polyval(p2_int, 1.0) - polyval(p2_int, -1.0)
+p2 = p * Polynomial([1, -1]) * Polynomial([1, 1])^2
+p2_int = integrate(p2)
+X = p2_int(1.0) - p2_int(-1.0)
 q = Quadrature(GRJM, Q, 1.0, 2.0, Float64)
-y = polyval(p, qzeros(q))
+y = p.(qzeros(q))
 Xg = sum(qweights(q) .* y)
 @test Xg ≈ X
 
@@ -101,12 +101,12 @@ Xg = sum(qweights(q) .* y)
 # GJ
 Q = 10
 N = 10
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GJ, Q, 0, 0)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
@@ -114,12 +114,12 @@ dyg = qdiff(q) * y
 # GRJM
 Q = 10
 N = 10
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GRJM, Q, 0, 0)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
@@ -128,12 +128,12 @@ dyg = qdiff(q) * y
 # GRJP
 Q = 10
 N = 10
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GRJP, Q, 0, 0)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
@@ -141,12 +141,12 @@ dyg = qdiff(q) * y
 # GLJ
 Q = 10
 N = 10
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GLJ, Q, 0, 0)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
@@ -159,12 +159,12 @@ b1 = 0.9
 # GJ
 Q = 10
 N = 10
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GJ, Q, a1, b1)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
@@ -172,12 +172,12 @@ dyg = qdiff(q) * y
 # GRJM
 Q = 10
 N = 10
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GRJM, Q, a1, b1)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
@@ -185,12 +185,12 @@ dyg = qdiff(q) * y
 # GRJP
 Q = 10
 N = 10
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GRJP, Q, a1, b1)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
@@ -198,23 +198,23 @@ dyg = qdiff(q) * y
 # GLJ
 Q = 10
 N = 10
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GLJ, Q, a1, b1)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
 Q = 200
 N = 200
-p = Poly(a[1:N])
-dp = polyder(p)
+p = Polynomial(a[1:N])
+dp = derivative(p)
 q = Quadrature(GLJ, Q, a1, b1)
 z = qzeros(q)
-y = polyval(p, z)
-dy = polyval(dp, z)
+y = p.(z)
+dy = dp.(z)
 dyg = qdiff(q) * y
 @test dy ≈ dyg
 
@@ -224,12 +224,12 @@ dyg = qdiff(q) * y
 
 N = 10
 Q = 10
-p = Poly(a[1:N])
+p = Polynomial(a[1:N])
 x = -1.0:0.02:1.0
-ue = polyval(p, x)
+ue = p.(x)
 q = Quadrature(GLJ, Q, 1.0, 0.5)
 z = qzeros(q)
-u = polyval(p, z)
+u = p.(z)
 I = interp_mat(x, z)
 ui = I * u
 @test ui ≈ ue

@@ -10,7 +10,7 @@ struct GRJP <: QUADRATURE_TYPE end
 # Calculate a ratio of Gamma functions without overflow
 function gamma_ratio(num::T, denom::T) where {T<:Number}
     if num>1 && denom>1
-        exp(lgamma(num) - lgamma(denom))
+        exp((logabsgamma(num))[1] - (logabsgamma(denom))[1])
     else
         gamma(num) / gamma(denom)
     end

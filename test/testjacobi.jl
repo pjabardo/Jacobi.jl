@@ -147,16 +147,16 @@ end
 xx = -1.0:0.1:1.0
 
 
-t11 = Poly([0, -11, 0, 220, 0, -1232, 0, 2816, 0, -2816, 0, 1024])
-u11 = Poly([0, -12, 0, 280, 0, -1792, 0, 4608, 0, -5120, 0, 2048])
+t11 = Polynomial([0, -11, 0, 220, 0, -1232, 0, 2816, 0, -2816, 0, 1024])
+u11 = Polynomial([0, -12, 0, 280, 0, -1792, 0, 4608, 0, -5120, 0, 2048])
 
 pt11 = Jacobi.poly_chebyshev(11)
 pu11 = Jacobi.poly_chebyshev2(11)
 pdt11 = Jacobi.poly_dchebyshev(11)
 pdu11 = Jacobi.poly_dchebyshev2(11)
 
-dt11 = polyder(t11)
-du11 = polyder(u11)
+dt11 = derivative(t11)
+du11 = derivative(u11)
 
 @test t11 == pt11
 @test u11 == pu11
@@ -185,9 +185,9 @@ y2 = du11.(xx)
 @test y1 ≈ y2
 
 # Testing legendre polynomials:
-leg11 = Poly([0, -693, 0, 15015, 0, -90090, 0, 218790, 0, -230945, 0, 88179])/256
+leg11 = Polynomial([0, -693, 0, 15015, 0, -90090, 0, 218790, 0, -230945, 0, 88179])/256
 pleg11 = Jacobi.poly_legendre(11)
-@test maximum(abs, leg11.a[1:12] - pleg11.a[1:12]) < 200*eps(500.0)
+@test maximum(abs, leg11.coeffs[1:12] - pleg11.coeffs[1:12]) < 200*eps(500.0)
 
 
 
