@@ -9,7 +9,7 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
 Polynomials = "1.1"
-SpecialFunctions = "0.10, 1.0"
+SpecialFunctions = "0.8, 0.9, 0.10, 1.0"
 julia = "≥ 1.0.0"
 
 [extras]
