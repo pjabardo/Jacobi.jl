@@ -8,6 +8,7 @@ Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
+Polynomials = "1.1"
 SpecialFunctions = "1.0"
 julia = "≥ 1.0.0"
 
