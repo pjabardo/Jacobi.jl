@@ -1,10 +1,6 @@
 # Jacobi
 
-[![Build Status](https://github.com/pjabardo/Jacobi.jl/workflows/CI/badge.svg)](https://github.com/pjabardo/Jacobi.jl/actions)
 [![Build Status](https://travis-ci.com/pjabardo/Jacobi.jl.svg?branch=master)](https://travis-ci.com/pjabardo/Jacobi.jl)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/pjabardo/Jacobi.jl?svg=true)](https://ci.appveyor.com/project/pjabardo/Jacobi-jl)
-[![Coverage](https://codecov.io/gh/pjabardo/Jacobi.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/pjabardo/Jacobi.jl)
-[![Coverage](https://coveralls.io/repos/github/pjabardo/Jacobi.jl/badge.svg?branch=master)](https://coveralls.io/github/pjabardo/Jacobi.jl?branch=master)
 
 
 A library that implements Jacobi polynomials and Gauss 
