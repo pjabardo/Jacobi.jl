@@ -2,10 +2,23 @@ using Polynomials
 
 
 """
-Calculate Chebyshev polynomials coefficients
+    poly_chebyshev(n, [::Type{T}=Int, [var=:x]])
+
+Create a Chebyshev order of order n `Polynomial` object.
 
 Instead of computing the polynomial at a specific point, 
 use `Polynomials` package to compute the actual polynomial
+
+Parameters:
+
+ * `n` Order of polynomials
+ * `T` Type of polynomial coefficients
+ * `var` symbol to be used as variable by the polynomial
+
+# Examples
+```julia-repl
+
+
 """
 function poly_chebyshev(n, ::Type{T}=Int, var=:x) where {T<:Number}
 
