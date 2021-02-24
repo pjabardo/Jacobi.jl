@@ -1,10 +1,14 @@
 using SpecialFunctions
-
+"Abstract quadrature type"
 abstract type QUADRATURE_TYPE end
 
+"Gauss-Jacobi quadrature type"
 struct GJ <: QUADRATURE_TYPE end
+"Gauss-Lobatto-Jacobi quadrature type"
 struct GLJ <: QUADRATURE_TYPE end
+"Gauss-Radau-Jacobi quadrature type includind the left end"
 struct GRJM <: QUADRATURE_TYPE end
+"Gauss-Radau-Jacobi quadrature type includind the right end"
 struct GRJP <: QUADRATURE_TYPE end
 
 # Calculate a ratio of Gamma functions without overflow

@@ -1,4 +1,7 @@
 """
+    jacobi(x, n [, a [, b]])
+    djacobi(x, n [, a [, b]])
+    
 Computes Jacobi polynomial and derivatives of Jacobi polynomials.
 
 This function computes the jacobi polynomial of degree `n` with weights
@@ -7,31 +10,28 @@ with default values:
 
  * `jacobi(x, n)` (`a` and `b` are both zero)
  * `jacobi(x, n, a)` (`b` is zero)
- * `jacobi(x, n, a, b) where `x` is an array
- * `jacobi!(x, n, a, b, y)` modifying array version of the function
 
 The derivative of Jacobi polynomials (\$\\frac{dP_n^{a,b}(x)}{dx}\$)are computed with functions that add a `d` in front of its name:
 
  * `djacobi`
- * `djacobi!`
+
+Parameters:
+ * `x` Where to calculate the polynomial
+ * `n` Order of polynomial
+ * `a` Weight α of the Jacobi polynomial
+ * `b` Weight β of the Jacobi polynomial
+ * returns: the value of the polynomial
+
 
 ### Examples
 ```julia
-using Jacobi
+julia> x = 0.3; a = 0.2; b = 0.1; m = 5;
 
-x = 0.3
-a = 0.2
-b = 0.1
-m = 5
-y = jacobi(x, m, a, b)
-x1 = linspace(-1,1,21)
-y1 = jacobi(x1, m, a, b)
-jacobi!(x1, m, a, b, y1)
+julia> y = jacobi(x, m, a, b)
+0.3780304524166406
 
-dy = djacobi(x, m, a, b)
-dy1 = djacobi(x1, m, a, b)
-djacobi!(x1, m, a, b, dy1)
-
+julia> dy = djacobi(x, m, a, b)
+-0.4343764194492186
 ```
 
 """
@@ -74,6 +74,8 @@ eps1(::Type{T}) where {T<:AbstractFloat} = eps(T)
 eps1(::Type{Complex{T}}) where {T<:AbstractFloat} = eps(T)
 
 """
+    jacobi_zeros(m, alpha, beta, x)
+
 Compute the zeros of Jacobi polynomials
 
 This function computes the zeros of Jacobi polynomials:
@@ -85,9 +87,16 @@ will be stored are preallocated. The non-modifying version, `jacobi_zeros`
 allocates a the memory and calls the modifying version. The function `legendre_zeros`
 compute the zeros of Legendre polynomials (`a = b = 0`)
 
-### Examples
-```
-using Jacobi
+Parameters:
+ * `m` Order of polynomial
+ * `alpha` Weight α of the Jacobi polynomial
+ * `beta` Weight β of the Jacobi polynomial
+ * `x` Place to store the zeros
+ * `T` A float type to compute the zeros
+ * returns: the array with zeros.
+
+# Examples
+```julia-repl
 z = jacobi_zeros(7, 0.3, 0.2)
 ```
 """
