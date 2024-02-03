@@ -1,7 +1,7 @@
 name = "Jacobi"
 uuid = "83f21c0b-4282-5fbc-9e3f-f6da3d2e584c"
 authors = ["Paulo José Saiz Jabardo <pjabardo@gmail.com> and contributors"]
-version = "0.6.1"
+version = "0.6.2"
 
 [deps]
 Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
